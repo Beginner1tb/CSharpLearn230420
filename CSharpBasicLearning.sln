@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32802.440
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpBasicLearning", "CSharpBasicLearning\CSharpBasicLearning.csproj", "{C2B80AF6-81EF-4F6C-BF98-1F1269A3EAC6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DelegateLearn_Named_Anonymous", "DelegateLearn_Named_Anonymous\DelegateLearn_Named_Anonymous.csproj", "{C1283023-5D86-408C-BFD0-2228183779CF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2B80AF6-81EF-4F6C-BF98-1F1269A3EAC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2B80AF6-81EF-4F6C-BF98-1F1269A3EAC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2B80AF6-81EF-4F6C-BF98-1F1269A3EAC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2B80AF6-81EF-4F6C-BF98-1F1269A3EAC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1283023-5D86-408C-BFD0-2228183779CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1283023-5D86-408C-BFD0-2228183779CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1283023-5D86-408C-BFD0-2228183779CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1283023-5D86-408C-BFD0-2228183779CF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8D4CD113-0AA5-47D0-AC48-8B9CAE679551}
+	EndGlobalSection
+EndGlobal
