@@ -15,7 +15,7 @@ namespace CSharpBasicLearning
 {
     public partial class Form1 : Form
     {
-        public UserInfo userInfoCreate;
+        private UserInfo userInfoCreate;
 
         //委托测试1
         public delegate void GreetingDelegate(string name);
