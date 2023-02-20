@@ -41,6 +41,7 @@ namespace CSharpBasicLearning
             greetingDelegate4("44444");
             greetingDelegate5("55555");
             greetingDelegate6("66666");
+            //userInfoCreate = new UserInfo();
         }
 
         private void Greet1(string name)
