@@ -41,6 +41,27 @@ namespace Delegate_Event
         {
             instance = null;
         }
+
+        private void TB_Sub_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                UserEvent.ProcessUser(TB_Sub.Text);
+               
+            }
+        }
+    }
+
+    public class SubInvokeEvent
+    {
+        public event EventHandler<UserArgs> InvokeProcesserEvent;
+        public void ProcessUser(string name)
+        {
+            UserArgs userArgs = new UserArgs();
+            userArgs.name = name;
+
+            InvokeProcesserEvent?.Invoke(null, userArgs);
+        }
     }
 
 

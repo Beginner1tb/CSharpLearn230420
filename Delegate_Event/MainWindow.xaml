@@ -8,6 +8,9 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Button x:Name="Btn_Show" Content="ShowSubWin" HorizontalAlignment="Left" Margin="61,60,0,0" VerticalAlignment="Top" Width="111" Height="48" Click="Btn_Show_Click"/>
+        <TextBox x:Name="TB_Event" HorizontalAlignment="Left" Height="23" Margin="61,145,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" KeyDown="TB_Event_KeyDown"/>
+        <Button x:Name="Btn_CrossForm" Content="CrossForm" HorizontalAlignment="Left" Margin="61,198,0,0" VerticalAlignment="Top" Width="111" Height="46" Click="Btn_CrossForm_Click"/>
+
 
     </Grid>
 </Window>

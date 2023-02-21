@@ -55,9 +55,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataBase.cs" />
     <Compile Include="Subwin.xaml.cs">
       <DependentUpon>Subwin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SubWin2.xaml.cs">
+      <DependentUpon>SubWin2.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserArgs.cs" />
+    <Compile Include="UserEvent.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,6 +77,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Subwin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SubWin2.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
