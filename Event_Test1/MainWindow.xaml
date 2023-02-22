@@ -1,0 +1,17 @@
+﻿<Window x:Class="Event_Test1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Event_Test1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="347.512" Width="444.953">
+    <Grid>
+        <TextBox x:Name="TextBlock" HorizontalAlignment="Left" Margin="104,72,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="34" Width="127"  />
+        <TextBlock x:Name="EventExecute_TextBlock" HorizontalAlignment="Left" Margin="104,148,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="37" Width="127"/>
+        <Label Content="事件响应" HorizontalAlignment="Left" Margin="34,143,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="Btn_CancelEvent" Content="取消事件" HorizontalAlignment="Left" Margin="290,148,0,0" VerticalAlignment="Top" Width="105" Height="34" Click="Btn_CancelEvent_Click"/>
+        <Button x:Name="Btn_SubscribeEvent" Content="订阅事件" HorizontalAlignment="Left" Margin="290,72,0,0" VerticalAlignment="Top" Width="105" Height="34" Click="Btn_SubscribeEvent_Click"/>
+
+    </Grid>
+</Window>

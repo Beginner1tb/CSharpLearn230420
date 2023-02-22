@@ -18,7 +18,7 @@ namespace Delegate_Event
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    
+
     public partial class MainWindow : Window
     {
 
@@ -29,12 +29,15 @@ namespace Delegate_Event
             InitializeComponent();
             DataBase dataBase = new DataBase();
 
-            //UserEvent.UserProcesserEvent += dataBase.SaveToDb;
-            //UserEvent.UserProcesserEvent += Btn_ShowModify;
-            //UserEvent.UserProcesserEvent += Btn_CrossFormModify;
+            //订阅事件，测试用的方法
+            UserEvent.UserProcesserEvent += dataBase.SaveToDb;
 
-            
-            subInvokeEvent.InvokeProcesserEvent += Btn_ShowModify;
+            //订阅界面上的事件
+            UserEvent.UserProcesserEvent += Btn_ShowModify;
+            UserEvent.UserProcesserEvent += Btn_CrossFormModify;
+
+            //测试用
+            //subInvokeEvent.InvokeProcesserEvent += Btn_ShowModify;
         }
 
         private void Btn_Show_Click(object sender, RoutedEventArgs e)
@@ -47,14 +50,21 @@ namespace Delegate_Event
 
         private void TB_Event_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key==Key.Enter)
+            if (e.Key == Key.Enter)
             {
-                //UserEvent.ProcessUser(TB_Event.Text);
-                subInvokeEvent.ProcessUser(TB_Event.Text);
+                //启用并发起事件，把参数TB_Event.Text当成UserArgs发出去
+                UserEvent.ProcessUser(TB_Event.Text);
+                //测试用
+                //subInvokeEvent.ProcessUser(TB_Event.Text);
             }
         }
 
-        private void Btn_ShowModify(object sender,UserArgs e)
+        /// <summary>
+        /// 响应事件，接受UserArgs
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Btn_ShowModify(object sender, UserArgs e)
         {
             Btn_Show.Dispatcher.Invoke(() =>
             {
