@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection_Test1",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.DI_ServiceLocator_Test", "1.DI_ServiceLocator_Test\1.DI_ServiceLocator_Test.csproj", "{07BA35D0-1CDA-445B-A1AB-18437D59B919}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.DI_Test1", "2.DI_Test1\2.DI_Test1.csproj", "{A1BB2459-CD81-455E-8E39-27F17B7C51F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{07BA35D0-1CDA-445B-A1AB-18437D59B919}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07BA35D0-1CDA-445B-A1AB-18437D59B919}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07BA35D0-1CDA-445B-A1AB-18437D59B919}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1BB2459-CD81-455E-8E39-27F17B7C51F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1BB2459-CD81-455E-8E39-27F17B7C51F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1BB2459-CD81-455E-8E39-27F17B7C51F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1BB2459-CD81-455E-8E39-27F17B7C51F8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
