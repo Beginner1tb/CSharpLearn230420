@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using Dll_Test1;
 
 
 namespace _2.DI_Test1
@@ -27,6 +28,7 @@ namespace _2.DI_Test1
                 
             }
 
+            
             Console.ReadLine();
         }
     }

@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1.DI_ServiceLocator_Test", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2.DI_Test1", "2.DI_Test1\2.DI_Test1.csproj", "{A1BB2459-CD81-455E-8E39-27F17B7C51F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dll_Test1", "Dll_Test1\Dll_Test1.csproj", "{2501DB21-B999-45B4-B8F6-55ACE728D23C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dll_TestUse", "Dll_TestUse\Dll_TestUse.csproj", "{A1887812-1E18-410B-A987-A42F0056B8E2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,14 @@ Global
 		{A1BB2459-CD81-455E-8E39-27F17B7C51F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1BB2459-CD81-455E-8E39-27F17B7C51F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1BB2459-CD81-455E-8E39-27F17B7C51F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2501DB21-B999-45B4-B8F6-55ACE728D23C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2501DB21-B999-45B4-B8F6-55ACE728D23C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2501DB21-B999-45B4-B8F6-55ACE728D23C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2501DB21-B999-45B4-B8F6-55ACE728D23C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1887812-1E18-410B-A987-A42F0056B8E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1887812-1E18-410B-A987-A42F0056B8E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1887812-1E18-410B-A987-A42F0056B8E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1887812-1E18-410B-A987-A42F0056B8E2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
