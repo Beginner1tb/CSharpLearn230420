@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dll_TestUse", "Dll_TestUse\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3.Nlog_TestSql", "3.Nlog_TestSql\3.Nlog_TestSql.csproj", "{998D86AB-A72C-4CDE-86CF-253761115208}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4.Nlog_WpfTest", "4.Nlog_WpfTest\4.Nlog_WpfTest.csproj", "{72C41C71-9C15-41E5-B8CD-171FDF8DC2EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{998D86AB-A72C-4CDE-86CF-253761115208}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{998D86AB-A72C-4CDE-86CF-253761115208}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{998D86AB-A72C-4CDE-86CF-253761115208}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72C41C71-9C15-41E5-B8CD-171FDF8DC2EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72C41C71-9C15-41E5-B8CD-171FDF8DC2EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72C41C71-9C15-41E5-B8CD-171FDF8DC2EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72C41C71-9C15-41E5-B8CD-171FDF8DC2EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
