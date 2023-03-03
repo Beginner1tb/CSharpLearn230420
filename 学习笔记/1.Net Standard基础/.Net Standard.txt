@@ -1,0 +1,6 @@
+1、.Net Standard是实现规范，可以应用于Framework，Core，Xamarin平台，具体实现是由各自平台自己实现
+2、.Net Standard可以作为类库，具体实现是在Framework，Core，Xamarin里，并且调用具体的实现，实现方法各不相同
+3、.Net Standard只是引用标准、规范或者叫定义，不是实现。当然自己写的类库可以包含实现
+4、.Net Standard建立的类库，可以被Framework，Core同时引用，注意Framework和Core最好不要交叉引用
+5、为了兼容性考量，最好使用较低版本的.Net Standard
+6、微软已经逐渐考量淘汰Framework，使用.Net代表.Net Core

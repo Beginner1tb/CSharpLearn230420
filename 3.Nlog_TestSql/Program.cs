@@ -7,7 +7,6 @@ using NLog;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 using Dapper;
-using NLog.Targets;
 
 namespace _3.Nlog_TestSql
 {
@@ -17,8 +16,20 @@ namespace _3.Nlog_TestSql
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
         static void Main(string[] args)
         {
-            logger.Error("1111");
-            
+            logger.Error("Error is "+DateTime.Now.ToShortTimeString());
+            logger.Warn("Warn is " + DateTime.Now.ToShortTimeString());
+            logger.Trace("Trace is " + DateTime.Now.ToShortTimeString());
+            logger.Info("Info is " + DateTime.Now.ToShortTimeString());
+
+            try
+            {
+                throw new ArgumentException("ex Test");
+            }
+            catch (Exception e)
+            {
+
+                logger.Fatal(e);
+            }
             //using (NpgsqlConnection conn = new NpgsqlConnection(testConnString))
             //{
             //    try
