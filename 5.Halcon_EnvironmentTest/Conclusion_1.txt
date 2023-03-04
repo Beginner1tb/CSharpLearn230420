@@ -1,0 +1,4 @@
+﻿1. 使用了Halcon22/bin文件里自带的halcon.dll和halcondonent.dll，并手动添加了halcondonet.dll的引用，记得要将这两文件放在exe同目录
+2. 只适用于X64版本，生成选项里勾除32位支持
+3. License文件夹要放在exe同目录，必须是文件夹
+4. 包含了从文件和内存流两种形式读取到HObject里两种方式
