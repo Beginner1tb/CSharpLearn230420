@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4.Nlog_WpfTest", "4.Nlog_Wp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5.Halcon_EnvironmentTest", "5.Halcon_EnvironmentTest\5.Halcon_EnvironmentTest.csproj", "{5048477C-BFC1-42B6-9A7A-34370EB205F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6.Halcon_TestForNuget", "6.Halcon_TestForNuget\6.Halcon_TestForNuget.csproj", "{DFB50834-08BD-441B-B4D8-C26C72AFD4F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{5048477C-BFC1-42B6-9A7A-34370EB205F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5048477C-BFC1-42B6-9A7A-34370EB205F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5048477C-BFC1-42B6-9A7A-34370EB205F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFB50834-08BD-441B-B4D8-C26C72AFD4F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFB50834-08BD-441B-B4D8-C26C72AFD4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFB50834-08BD-441B-B4D8-C26C72AFD4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFB50834-08BD-441B-B4D8-C26C72AFD4F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
