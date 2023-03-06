@@ -10,7 +10,8 @@
         <Image x:Name="Img1" HorizontalAlignment="Left" Height="159" Margin="80,74,0,0" VerticalAlignment="Top" Width="276"
                >
         </Image>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="400,116,0,0" VerticalAlignment="Top" Width="134" Height="79" Click="Button_Click" />
+        <Button Content="简单算法测试" HorizontalAlignment="Left" Margin="400,74,0,0" VerticalAlignment="Top" Width="134" Height="79" Click="Button_Click" />
+        <Button x:Name="Btn_AlgoEncap" Content="封装算法测试" HorizontalAlignment="Left" Margin="400,172,0,0" VerticalAlignment="Top" Width="134" Height="79" Click="Btn_AlgoEncap_Click" />
 
     </Grid>
 </Window>
