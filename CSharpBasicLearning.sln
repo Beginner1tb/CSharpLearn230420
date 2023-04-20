@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5.Halcon_EnvironmentTest", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6.Halcon_TestForNuget", "6.Halcon_TestForNuget\6.Halcon_TestForNuget.csproj", "{DFB50834-08BD-441B-B4D8-C26C72AFD4F1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reflection_Learn1", "Reflection_Learn1\Reflection_Learn1.csproj", "{C053EA3E-86AE-4CB2-9614-6970F928F05D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{DFB50834-08BD-441B-B4D8-C26C72AFD4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DFB50834-08BD-441B-B4D8-C26C72AFD4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DFB50834-08BD-441B-B4D8-C26C72AFD4F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C053EA3E-86AE-4CB2-9614-6970F928F05D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C053EA3E-86AE-4CB2-9614-6970F928F05D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C053EA3E-86AE-4CB2-9614-6970F928F05D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C053EA3E-86AE-4CB2-9614-6970F928F05D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
