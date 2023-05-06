@@ -34,6 +34,8 @@ namespace _7.Queue
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DeleteObject(IntPtr hObject);
 
+        private double _factor = 1;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -317,6 +319,65 @@ namespace _7.Queue
 
 
 
+        }
+
+        private void Img1_MouseMove(object sender, MouseEventArgs e)
+        {
+            var center = e.GetPosition(grid);
+            var length = MagnifierCircle.ActualWidth*_factor;
+            var radius = length / 2;
+            var viewboxRect = new Rect(center.X- radius, center.Y- radius, length, length);
+
+            var CircleCenter = e.GetPosition(Img1);
+
+            MagnifierBrush.Viewbox = viewboxRect;
+            Canvas.SetLeft(MagnifierCircle, CircleCenter.X - MagnifierCircle.ActualWidth / 2); //同理重新定位Canvas magnifierCanvas的坐标
+            Canvas.SetTop(MagnifierCircle, CircleCenter.Y - MagnifierCircle.ActualHeight / 2);
+            //MagnifierCircle.SetValue(Canvas.LeftProperty, center.X - MagnifierCircle.ActualWidth / 2);
+            //MagnifierCircle.SetValue(Canvas.TopProperty, center.Y - MagnifierCircle.ActualHeight / 2);
+
+        }
+
+        private void Img1_MouseEnter(object sender, MouseEventArgs e)
+        {
+            MagnifierCircle.Visibility = Visibility.Visible;
+        }
+
+        private void Img1_MouseLeave(object sender, MouseEventArgs e)
+        {
+            MagnifierCircle.Visibility = Visibility.Collapsed;
+        }
+
+        private void MagnifierCircle_Loaded(object sender, RoutedEventArgs e)
+        {
+            MagnifierCircle.Visibility = Visibility.Collapsed;
+        }
+
+        private void MagnifierCircle_MouseWheel(object sender, MouseWheelEventArgs e)
+        {
+          //  MessageBox.Show("1");
+            if (e.Delta>0)
+            {
+                if (_factor<=0.1)
+                {
+                    _factor = 0.1;
+                }
+                else
+                {
+                    _factor -= 0.1;
+                }
+            }
+            else
+            {
+                if (_factor>=1)
+                {
+                    _factor = 1;
+                }
+                else
+                {
+                    _factor += 0.1;
+                }
+            }
         }
     }
 }
