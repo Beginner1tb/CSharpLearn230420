@@ -1,0 +1,14 @@
+﻿<Window x:Class="Wpf_ControlAdd.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wpf_ControlAdd"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid x:Name="grid">
+        <local:UserControl_Test1 x:Name="UserControl_1" Loaded="UserControl_1_Loaded">
+            
+        </local:UserControl_Test1>
+    </Grid>
+</Window>

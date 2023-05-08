@@ -219,7 +219,7 @@ namespace _6.Halcon_TestForNuget
                     Algorithem algorithem = new Algorithem();
 
                     out1 = algorithem.Algorithm_Test1(imageData);
-
+                    Console.WriteLine("封装算法测试" + out1.height1.ToString()); ;
                    
                    // System.Windows.MessageBox.Show($"ImageHeight is {out1.height1.ToString()}\nImageWidth is {out1.width1.ToString()}");
                 }
