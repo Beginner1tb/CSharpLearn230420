@@ -4,11 +4,17 @@
 
 extern "C" __declspec(dllexport) int Add(int, int);
 
+extern "C" __declspec(dllexport) int foo1(int*);
+
 int Add(int a, int b)
 {
     return a + b;
 }
 
+int foo1(int* p)
+{
+    return *p;
+}
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
