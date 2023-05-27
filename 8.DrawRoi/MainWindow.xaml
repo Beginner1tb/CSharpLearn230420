@@ -1,0 +1,55 @@
+﻿<Window x:Class="_8.DrawRoi.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_8.DrawRoi"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Viewbox >
+        <Grid x:Name="grid" Width="800" Height="450">
+            <Image x:Name="image"
+               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="103,103,381,47"
+               Height="300" Width="300"
+               Source="D://TestFolder//Image//cat//wallpaper.jpg"  Stretch="Uniform"
+               MouseLeftButtonDown="image_MouseLeftButtonDown"  MouseMove="image_MouseMove" 
+               MouseLeftButtonUp="image_MouseLeftButtonUp"
+               MouseRightButtonDown="image_MouseRightButtonDown"
+               />
+            <Canvas x:Name="canvas"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="103,103,381,47"
+                Height="300" Width="300">
+                <Rectangle x:Name="roiRect" Stroke="Red" StrokeThickness="2" Visibility="Visible" Margin="-1,-1,-1,-1"/>
+            </Canvas>
+            <Button x:Name="SaveRect1" Content="保存框1位置" HorizontalAlignment="Left" Margin="200,23,0,0" VerticalAlignment="Top" Height="65" Width="83" Click="SaveRect1_Click"/>
+            <Image x:Name="image_1" 
+                   HorizontalAlignment="Left" Height="300" 
+                   Margin="481,103,0,0" VerticalAlignment="Top" Width="300"
+                   Source="D://TestFolder//Image//cat//wallpaper.jpg"  Stretch="Uniform"
+                   MouseLeftButtonDown="image_1_MouseLeftButtonDown"
+                   MouseMove="image_1_MouseMove"
+                   MouseLeftButtonUp="image_1_MouseLeftButtonUp"
+                   />
+            <!--为了实现框内点击效果，要给框加填充-->
+            <Canvas x:Name="canvas_1"
+                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="481,103,0,0"
+                Height="300" Width="300">
+                <Rectangle x:Name="roiRect_1" Stroke="Red" StrokeThickness="2" Visibility="Visible"
+                           Canvas.Top="10" Canvas.Left="0"
+                           Width="100" Height="100"                     
+                           Fill="Transparent"
+                           MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown"/>
+
+                <!--MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown" MouseMove="roiRect_1_MouseMove"--> 
+                   
+                <Rectangle x:Name="topRect" Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="5" Fill="Yellow" Visibility="Visible"  Canvas.Left="0" Canvas.Top="10"  Cursor="SizeNS" MouseLeftButtonDown="topRect_MouseLeftButtonDown" MouseMove="topRect_MouseMove" MouseLeftButtonUp="topRect_MouseLeftButtonUp"/>
+                <Rectangle x:Name="bottomRect" Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="5" Fill="Yellow" Visibility="Visible" Canvas.Left="0" Canvas.Top="100"  Cursor="SizeNS" MouseLeftButtonDown="bottomRect_MouseLeftButtonDown" MouseMove="bottomRect_MouseMove" />
+                <Rectangle x:Name="leftRect" Width="5" Height="{Binding ElementName=roiRect_1, Path=ActualHeight}" Fill="Yellow" Visibility="Hidden" MouseLeftButtonDown="leftRect_MouseLeftButtonDown" MouseMove="leftRect_MouseMove"  />
+                <Rectangle x:Name="rightRect" Width="5" Height="{Binding ElementName=roiRect_1, Path=ActualHeight}" Fill="Yellow" Visibility="Hidden" MouseLeftButtonDown="rightRect_MouseLeftButtonDown" MouseMove="rightRect_MouseMove" />
+            </Canvas>
+
+
+
+        </Grid>
+    </Viewbox>
+</Window>
