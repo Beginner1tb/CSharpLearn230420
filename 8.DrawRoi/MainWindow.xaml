@@ -25,11 +25,11 @@
             <Image x:Name="image_1" 
                    HorizontalAlignment="Left" Height="300" 
                    Margin="481,103,0,0" VerticalAlignment="Top" Width="300"
-                   Source="D://TestFolder//Image//cat//wallpaper.jpg"  Stretch="Uniform"
-                   MouseLeftButtonDown="image_1_MouseLeftButtonDown"
+                   Source="D://TestFolder//Image//cat//wallpaper.jpg"  Stretch="Fill"/>
+            <!--MouseLeftButtonDown="image_1_MouseLeftButtonDown"
                    MouseMove="image_1_MouseMove"
-                   MouseLeftButtonUp="image_1_MouseLeftButtonUp"
-                   />
+                   MouseLeftButtonUp="image_1_MouseLeftButtonUp"-->
+
             <!--为了实现框内点击效果，要给框加填充-->
             <Canvas x:Name="canvas_1"
                 HorizontalAlignment="Left" VerticalAlignment="Top" Margin="481,103,0,0"
@@ -38,15 +38,20 @@
                            Canvas.Top="10" Canvas.Left="0"
                            Width="100" Height="100"                     
                            Fill="Transparent"
-                           MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown"/>
+                           MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown"
+                           MouseMove="roiRect_1_MouseMove"
+                           MouseLeftButtonUp="roiRect_1_MouseLeftButtonUp"/>
 
-                <!--MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown" MouseMove="roiRect_1_MouseMove"--> 
-                   
-                <Rectangle x:Name="topRect" Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="5" Fill="Yellow" Visibility="Visible"  Canvas.Left="0" Canvas.Top="10"  Cursor="SizeNS" MouseLeftButtonDown="topRect_MouseLeftButtonDown" MouseMove="topRect_MouseMove" MouseLeftButtonUp="topRect_MouseLeftButtonUp"/>
-                <Rectangle x:Name="bottomRect" Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="5" Fill="Yellow" Visibility="Visible" Canvas.Left="0" Canvas.Top="100"  Cursor="SizeNS" MouseLeftButtonDown="bottomRect_MouseLeftButtonDown" MouseMove="bottomRect_MouseMove" />
-                <Rectangle x:Name="leftRect" Width="5" Height="{Binding ElementName=roiRect_1, Path=ActualHeight}" Fill="Yellow" Visibility="Hidden" MouseLeftButtonDown="leftRect_MouseLeftButtonDown" MouseMove="leftRect_MouseMove"  />
-                <Rectangle x:Name="rightRect" Width="5" Height="{Binding ElementName=roiRect_1, Path=ActualHeight}" Fill="Yellow" Visibility="Hidden" MouseLeftButtonDown="rightRect_MouseLeftButtonDown" MouseMove="rightRect_MouseMove" />
+                <!--
+                MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown"
+                MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown" MouseMove="roiRect_1_MouseMove"-->
+
+                <Rectangle x:Name="topRect"  Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="5" Fill="Red" Visibility="Visible"  Canvas.Left="0" Canvas.Top="10"  Cursor="SizeNS" MouseLeftButtonDown="topRect_MouseLeftButtonDown" MouseMove="topRect_MouseMove" MouseLeftButtonUp="topRect_MouseLeftButtonUp"/>
+                <Rectangle x:Name="bottomRect" Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="5" Fill="Red" Visibility="Visible" Canvas.Left="0" Canvas.Top="105"  Cursor="SizeNS" MouseLeftButtonDown="bottomRect_MouseLeftButtonDown" MouseMove="bottomRect_MouseMove" MouseLeftButtonUp="bottomRect_MouseLeftButtonUp"/>
+                <Rectangle x:Name="leftRect" Width="5" Height="{Binding ElementName=roiRect_1, Path=ActualHeight}" Fill="Red" Canvas.Left="0" Canvas.Top="10" Visibility="Visible" Cursor="SizeWE" MouseLeftButtonDown="leftRect_MouseLeftButtonDown" MouseMove="leftRect_MouseMove" MouseLeftButtonUp="leftRect_MouseLeftButtonUp" />
+                <Rectangle x:Name="rightRect" Width="5" Height="{Binding ElementName=roiRect_1, Path=ActualHeight}" Fill="Red" Canvas.Left="95" Canvas.Top="10" Visibility="Visible" Cursor="SizeWE" MouseLeftButtonDown="rightRect_MouseLeftButtonDown" MouseMove="rightRect_MouseMove" MouseLeftButtonUp="rightRect_MouseLeftButtonUp"/>
             </Canvas>
+            <Button x:Name="SaveRect2" Content="保存框2位置" HorizontalAlignment="Left" Margin="590,23,0,0" VerticalAlignment="Top" Height="65" Width="83" Click="SaveRect2_Click"/>
 
 
 
