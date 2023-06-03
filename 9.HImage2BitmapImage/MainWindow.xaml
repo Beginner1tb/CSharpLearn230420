@@ -1,0 +1,15 @@
+﻿<Window x:Class="_9.HImage2BitmapImage.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_9.HImage2BitmapImage"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="532,275,0,0" VerticalAlignment="Top" Height="91" Width="172" Click="Button_Click"/>
+        <Button Content="测试1" HorizontalAlignment="Left" Margin="84,74,0,0" VerticalAlignment="Top" Height="77" Width="108" Click="Button_Click_1"/>
+        <Button x:Name="pointer_test" Content="测试2" HorizontalAlignment="Left" Margin="213,75,0,0" VerticalAlignment="Top" Height="75" Width="106" Click="pointer_test_Click"/>
+
+    </Grid>
+</Window>
