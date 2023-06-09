@@ -174,37 +174,40 @@ namespace _9.HImage2BitmapImage
 
             // 启动计时器
             stopwatch.Start();
-            hImage.GetImagePointer3(out IntPtr r, out IntPtr g, out IntPtr b, out string type, out int w, out int h);
-            byte[] red = new byte[w * h];
-            byte[] green = new byte[w * h];
-            byte[] blue = new byte[w * h];
-            // 将指针指向地址的值取出来放到byte数组中
-            Marshal.Copy(r, red, 0, w * h);
-            Marshal.Copy(g, green, 0, w * h);
-            Marshal.Copy(b, blue, 0, w * h);
-            Bitmap bitmap = new Bitmap(w, h, PixelFormat.Format32bppRgb);
-            Rectangle rect = new Rectangle(0, 0, w, h);
-            BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
-            IntPtr bptr = bitmapData.Scan0;
-            for (int i = 0; i < red.Length; i++)
-            {
-                Marshal.Copy(blue, i, bptr + i * 4, 1);
-                Marshal.Copy(green, i, bptr + i * 4 + 1, 1);
-                Marshal.Copy(red, i, bptr + i * 4 + 2, 1);
-                Marshal.Copy(new byte[] { 255 }, 0, bptr + i * 4 + 3, 1);
-            }
+            //hImage.GetImagePointer3(out IntPtr r, out IntPtr g, out IntPtr b, out string type, out int w, out int h);
+            //byte[] red = new byte[w * h];
+            //byte[] green = new byte[w * h];
+            //byte[] blue = new byte[w * h];
+            //// 将指针指向地址的值取出来放到byte数组中
+            //Marshal.Copy(r, red, 0, w * h);
+            //Marshal.Copy(g, green, 0, w * h);
+            //Marshal.Copy(b, blue, 0, w * h);
+            //// Bitmap bitmap = new Bitmap(w, h, PixelFormat.Format32bppRgb);
+            //Bitmap bitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            //Rectangle rect = new Rectangle(0, 0, w, h);
+            //BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            ////  BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
+            //IntPtr bptr = bitmapData.Scan0;
+            //for (int i = 0; i < red.Length; i++)
+            //{
+            //    Marshal.Copy(blue, i, bptr + i * 4, 1);
+            //    Marshal.Copy(green, i, bptr + i * 4 + 1, 1);
+            //    Marshal.Copy(red, i, bptr + i * 4 + 2, 1);
+            //    // Marshal.Copy(new byte[] { 255 }, 0, bptr + i * 4 + 3, 1);
+            //}
 
-            bitmap.UnlockBits(bitmapData);
+            //bitmap.UnlockBits(bitmapData);
 
             // bitmap.Dispose();
             // bitmapData = null;
-            bptr = IntPtr.Zero;
+
+            Bitmap bitmap = HImage2Bitmap32Intptr(hImage);
 
             stopwatch.Stop();
 
             // 获取经过的时间
             TimeSpan elapsedTime = stopwatch.Elapsed;
-
+            bitmap.Save("method1.bmp", ImageFormat.Bmp);
             // 输出运行时间
             Debug.WriteLine("使用Marshal方法运行时间: " + elapsedTime.TotalMilliseconds);
 
@@ -212,6 +215,43 @@ namespace _9.HImage2BitmapImage
 
             GC.Collect();
         }
+
+        private Bitmap HImage2Bitmap32Intptr(HImage hImage)
+        {
+            try
+            {
+                hImage.GetImagePointer3(out IntPtr r, out IntPtr g, out IntPtr b, out string type, out int w, out int h);
+                byte[] red = new byte[w * h];
+                byte[] green = new byte[w * h];
+                byte[] blue = new byte[w * h];
+                // 将指针指向地址的值取出来放到byte数组中
+                Marshal.Copy(r, red, 0, w * h);
+                Marshal.Copy(g, green, 0, w * h);
+                Marshal.Copy(b, blue, 0, w * h);
+                Bitmap bitmap = new Bitmap(w, h, PixelFormat.Format32bppRgb);
+                // Bitmap bitmap = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+                Rectangle rect = new Rectangle(0, 0, w, h);
+                // BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
+                IntPtr bptr = bitmapData.Scan0;
+                for (int i = 0; i < red.Length; i++)
+                {
+                    Marshal.Copy(blue, i, bptr + i * 4, 1);
+                    Marshal.Copy(green, i, bptr + i * 4 + 1, 1);
+                    Marshal.Copy(red, i, bptr + i * 4 + 2, 1);
+                    Marshal.Copy(new byte[] { 255 }, 0, bptr + i * 4 + 3, 1);
+                }
+
+                bitmap.UnlockBits(bitmapData);
+                return bitmap;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
 
         private void pointer_test_Click(object sender, RoutedEventArgs e)
         {
@@ -225,34 +265,53 @@ namespace _9.HImage2BitmapImage
             // 启动计时器
             stopwatch.Start();
 
-            hImage.GetImagePointer3(out IntPtr r, out IntPtr g, out IntPtr b, out string type, out int w, out int h);
-            byte[] red = new byte[w * h];
-            byte[] green = new byte[w * h];
-            byte[] blue = new byte[w * h];
-            // 将指针指向地址的值取出来放到byte数组中
-            Marshal.Copy(r, red, 0, w * h);
-            Marshal.Copy(g, green, 0, w * h);
-            Marshal.Copy(b, blue, 0, w * h);
+            //hImage.GetImagePointer3(out IntPtr r, out IntPtr g, out IntPtr b, out string type, out int w, out int h);
+            //byte[] red = new byte[w * h];
+            //byte[] green = new byte[w * h];
+            //byte[] blue = new byte[w * h];
+            //// 将指针指向地址的值取出来放到byte数组中
+            //Marshal.Copy(r, red, 0, w * h);
+            //Marshal.Copy(g, green, 0, w * h);
+            //Marshal.Copy(b, blue, 0, w * h);
+            //Bitmap bitmap2 = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+            ////Bitmap bitmap2 = new Bitmap(w, h, PixelFormat.Format32bppRgb);
+            //Rectangle rect2 = new Rectangle(0, 0, w, h);
+            //BitmapData bitmapData2 = bitmap2.LockBits(rect2, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            ////BitmapData bitmapData2 = bitmap2.LockBits(rect2, ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
+            //IntPtr intPtr = bitmapData2.Scan0;
 
-            Bitmap bitmap2 = new Bitmap(w, h, PixelFormat.Format32bppRgb);
-            Rectangle rect2 = new Rectangle(0, 0, w, h);
-            BitmapData bitmapData2 = bitmap2.LockBits(rect2, ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
-            IntPtr intPtr = bitmapData2.Scan0;
-            unsafe
-            {
+            //int iPadding = (4 - ((w * 3) % 4)) % 4;
+            //int iStride = w * 3 + iPadding;
+            ////
+            //unsafe
+            //{
 
-                byte* bptr2 = (byte*)bitmapData2.Scan0;
-                for (int i = 0; i < w * h; i++)
-                {
-                    bptr2[i * 4] = blue[i];
-                    bptr2[i * 4 + 1] = green[i];
-                    bptr2[i * 4 + 2] = red[i];
-                    bptr2[i * 4 + 3] = 255;
-                }
+            //    byte* bptr2 = (byte*)bitmapData2.Scan0;
+            //    //for (int i = 0; i < w * h; i++)
+            //    //{
+            //    //    bptr2[i * 4] = blue[i];
+            //    //    bptr2[i * 4 + 1] = green[i];
+            //    //    bptr2[i * 4 + 2] = red[i];
+            //    //    bptr2[i * 4 + 3] = 255;
+            //    //}
 
-            }
-            bitmap2.UnlockBits(bitmapData2);
+            //    for (int i = 0; i < w * h; i++)
+            //    {
+            //        bptr2[i * 3] = blue[i];
+            //        bptr2[i * 3 + 1] = green[i];
+            //        bptr2[i * 3 + 2] = red[i];
 
+            //    }
+
+
+
+            //}
+            //bitmap2.UnlockBits(bitmapData2);
+
+            Bitmap bitmap2 = HImage2Bitmap24Ptr(hImage);
+
+
+            bitmap2.Save("method2.bmp", ImageFormat.Bmp);
             // 获取经过的时间
             TimeSpan elapsedTime = stopwatch.Elapsed;
 
@@ -261,6 +320,111 @@ namespace _9.HImage2BitmapImage
 
             hImage.Dispose();
 
+        }
+
+        private Bitmap HImage2Bitmap24Ptr(HImage hImage)
+        {
+            try
+            {
+                hImage.GetImagePointer3(out IntPtr r, out IntPtr g, out IntPtr b, out string type, out int w, out int h);
+                byte[] red = new byte[w * h];
+                byte[] green = new byte[w * h];
+                byte[] blue = new byte[w * h];
+                // 将指针指向地址的值取出来放到byte数组中
+                Marshal.Copy(r, red, 0, w * h);
+                Marshal.Copy(g, green, 0, w * h);
+                Marshal.Copy(b, blue, 0, w * h);
+                Bitmap bitmap2 = new Bitmap(w, h, PixelFormat.Format24bppRgb);
+                //Bitmap bitmap2 = new Bitmap(w, h, PixelFormat.Format32bppRgb);
+                Rectangle rect2 = new Rectangle(0, 0, w, h);
+                BitmapData bitmapData2 = bitmap2.LockBits(rect2, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                //BitmapData bitmapData2 = bitmap2.LockBits(rect2, ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
+                IntPtr intPtr = bitmapData2.Scan0;
+
+
+                //
+                unsafe
+                {
+
+                    byte* bptr2 = (byte*)bitmapData2.Scan0;
+                    //for (int i = 0; i < w * h; i++)
+                    //{
+                    //    bptr2[i * 4] = blue[i];
+                    //    bptr2[i * 4 + 1] = green[i];
+                    //    bptr2[i * 4 + 2] = red[i];
+                    //    bptr2[i * 4 + 3] = 255;
+                    //}
+
+                    for (int i = 0; i < w * h; i++)
+                    {
+                        bptr2[i * 3] = blue[i];
+                        bptr2[i * 3 + 1] = green[i];
+                        bptr2[i * 3 + 2] = red[i];
+
+                    }
+
+                }
+                bitmap2.UnlockBits(bitmapData2);
+                return bitmap2;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("HImage转24BMP错误", ex);
+            }
+        }
+
+
+        private Bitmap HImage2Bitmap32Ptr(HImage hImage)
+        {
+            try
+            {
+                hImage.GetImagePointer3(out IntPtr r, out IntPtr g, out IntPtr b, out string type, out int w, out int h);
+                byte[] red = new byte[w * h];
+                byte[] green = new byte[w * h];
+                byte[] blue = new byte[w * h];
+                // 将指针指向地址的值取出来放到byte数组中
+                Marshal.Copy(r, red, 0, w * h);
+                Marshal.Copy(g, green, 0, w * h);
+                Marshal.Copy(b, blue, 0, w * h);
+
+                Bitmap bitmap2 = new Bitmap(w, h, PixelFormat.Format32bppRgb);
+                Rectangle rect2 = new Rectangle(0, 0, w, h);
+                //BitmapData bitmapData2 = bitmap2.LockBits(rect2, ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+                BitmapData bitmapData2 = bitmap2.LockBits(rect2, ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
+                IntPtr intPtr = bitmapData2.Scan0;
+
+
+                //
+                unsafe
+                {
+
+                    byte* bptr2 = (byte*)bitmapData2.Scan0;
+                    for (int i = 0; i < w * h; i++)
+                    {
+                        bptr2[i * 4] = blue[i];
+                        bptr2[i * 4 + 1] = green[i];
+                        bptr2[i * 4 + 2] = red[i];
+                        bptr2[i * 4 + 3] = 255;
+                    }
+
+                    //for (int i = 0; i < w * h; i++)
+                    //{
+                    //    bptr2[i * 3] = blue[i];
+                    //    bptr2[i * 3 + 1] = green[i];
+                    //    bptr2[i * 3 + 2] = red[i];
+
+                }
+
+
+                bitmap2.UnlockBits(bitmapData2);
+                return bitmap2;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("HImage转24BMP错误", ex);
+            }
         }
 
         private void gray_pointer_Click(object sender, RoutedEventArgs e)
@@ -359,11 +523,12 @@ namespace _9.HImage2BitmapImage
 
 
         /// <summary>
-		/// Halcon Image .NET Bitmap
-		/// </summary>
-		/// <param name="halconImage"></param>
-		/// <returns></returns>
-		public static Bitmap ConvertHalconImageToBitmap(HObject halconImage, bool isColor)
+        /// Halcon Image .NET Bitmap，内存问题，不可用
+        /// </summary>
+        /// <param name="halconImage"></param>
+        /// <returns></returns>
+        [Obsolete("Has problem in memory copy")]
+        public static Bitmap ConvertHalconImageToBitmap(HObject halconImage, bool isColor)
         {
             if (halconImage == null)
             {
@@ -430,6 +595,11 @@ namespace _9.HImage2BitmapImage
             return bitmap;
         }
 
+        /// <summary>
+        /// 可用，HImage转Bitmap彩色和黑白二合一
+        /// </summary>
+        /// <param name="ho_Image"></param>
+        /// <returns></returns>
         public static Bitmap HImageToBitmap(HImage ho_Image)
         {
             int iWidth, iHeight, iNumChannels;
@@ -538,6 +708,11 @@ namespace _9.HImage2BitmapImage
             return bitmap;
         }
 
+        /// <summary>
+        /// 可用，HObject转黑白bitmap
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="bitmap"></param>
         public void HObject2Bitmap(HObject image, out Bitmap bitmap)
         {
             HTuple hpoint, type, width, height;
@@ -562,6 +737,11 @@ namespace _9.HImage2BitmapImage
             bitmap.UnlockBits(bitmapData);
         }
 
+        /// <summary>
+        /// 可用，HObject转Bitmap彩色
+        /// </summary>
+        /// <param name="hObject"></param>
+        /// <returns></returns>
         public static Bitmap HObject2Bitmap24(HObject hObject)
         {
             HTuple hpoint, type, width, height, width0, height0;
@@ -622,7 +802,7 @@ namespace _9.HImage2BitmapImage
 
 
             TimeSpan elapsedTime = stopwatch.Elapsed;
-            bitmap.Save(@"hobject_convert_color.bmp",ImageFormat.Bmp);
+            bitmap.Save(@"hobject_convert_color.bmp", ImageFormat.Bmp);
             // 输出运行时间
             Debug.WriteLine("hobject_conver彩色运行时间: " + elapsedTime.TotalMilliseconds);
 
