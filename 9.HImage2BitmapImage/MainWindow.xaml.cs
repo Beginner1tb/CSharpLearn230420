@@ -159,6 +159,9 @@ namespace _9.HImage2BitmapImage
             return image;
         }
 
+
+
+
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
 
@@ -193,12 +196,8 @@ namespace _9.HImage2BitmapImage
 
             bitmap.UnlockBits(bitmapData);
 
-            red = null;
-            green = null;
-            blue = null;
-
-           // bitmap.Dispose();
-           // bitmapData = null;
+            // bitmap.Dispose();
+            // bitmapData = null;
             bptr = IntPtr.Zero;
 
             stopwatch.Stop();
@@ -234,7 +233,7 @@ namespace _9.HImage2BitmapImage
             Marshal.Copy(r, red, 0, w * h);
             Marshal.Copy(g, green, 0, w * h);
             Marshal.Copy(b, blue, 0, w * h);
-           
+
             Bitmap bitmap2 = new Bitmap(w, h, PixelFormat.Format32bppRgb);
             Rectangle rect2 = new Rectangle(0, 0, w, h);
             BitmapData bitmapData2 = bitmap2.LockBits(rect2, ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
@@ -250,7 +249,7 @@ namespace _9.HImage2BitmapImage
                     bptr2[i * 4 + 2] = red[i];
                     bptr2[i * 4 + 3] = 255;
                 }
-                
+
             }
             bitmap2.UnlockBits(bitmapData2);
 
@@ -276,12 +275,12 @@ namespace _9.HImage2BitmapImage
             Marshal.Copy(intPtr, buffer, 0, buffer.Length);
             Bitmap bitmap3 = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
             Rectangle rect3 = new Rectangle(0, 0, width, height);
-            BitmapData bitmapData3 = bitmap3.LockBits(rect3, ImageLockMode.ReadWrite, bitmap3.PixelFormat);
+            // BitmapData bitmapData3 = bitmap3.LockBits(rect3, ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
             unsafe
             {
                 fixed (byte* bytepointer = buffer)
                 {
-                  
+
                     bitmap3 = new Bitmap(width, height, width, PixelFormat.Format8bppIndexed, new IntPtr(bytepointer));
                     ColorPalette colorPalette = bitmap3.Palette;
                     for (int i = 0; i < 255; i++)
@@ -289,24 +288,347 @@ namespace _9.HImage2BitmapImage
                         colorPalette.Entries[i] = System.Drawing.Color.FromArgb(255, i, i, i);
                     }
                     bitmap3.Palette = colorPalette;
+
+
                 }
 
             }
-            //bitmap3.UnlockBits(bitmapData3);
 
-            bitmap3.Save(@"2.bmp");
+            // bitmap3.UnlockBits(bitmapData3);
+
 
             // 获取经过的时间
             TimeSpan elapsedTime = stopwatch.Elapsed;
             // 输出运行时间
             Debug.WriteLine("使用unsafe Pointer方法运行时间: " + elapsedTime.TotalMilliseconds);
-
+            bitmap3.Save(@"2.bmp");
             hImage.Dispose();
         }
 
+
+        /// <summary>
+        /// 暂时不用
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void gray_pointer2_Click(object sender, RoutedEventArgs e)
         {
+            Stopwatch stopwatch = new Stopwatch();
 
+            // 启动计时器
+            stopwatch.Start();
+            HImage hImage = new HImage(@"1.bmp");
+            string filepath = @"pexels-francesco-ungaro-1525041.bmp";
+
+            //HObject hObject = ReadFileToHObject(filepath);
+            HObject hObject = ConvertHImageToHObject(hImage);
+            //Bitmap bitmap = ConvertHalconImageToBitmap(hObject, true);
+            Bitmap bitmap = HImageToBitmap(hImage);
+
+
+            TimeSpan elapsedTime = stopwatch.Elapsed;
+            bitmap.Save(@"hobject.bmp");
+            // 输出运行时间
+            Debug.WriteLine("使用Intptr方法运行时间: " + elapsedTime.TotalMilliseconds);
+
+            hObject.Dispose();
+
+            // GC.Collect();
+        }
+
+        // 将HImage转换为HObject
+        public HObject ConvertHImageToHObject(HImage himage)
+        {
+            HObject hObject;
+            HOperatorSet.GenEmptyObj(out hObject);
+            HOperatorSet.ConvertImageType(himage, out hObject, "byte");
+
+            return hObject;
+        }
+
+
+        // 从文件地址读取到HObject
+        public HObject ReadFileToHObject(string filepath)
+        {
+            HObject hObject;
+            HOperatorSet.GenEmptyObj(out hObject);
+            HOperatorSet.ReadImage(out hObject, filepath);
+
+            return hObject;
+        }
+
+
+        /// <summary>
+		/// Halcon Image .NET Bitmap
+		/// </summary>
+		/// <param name="halconImage"></param>
+		/// <returns></returns>
+		public static Bitmap ConvertHalconImageToBitmap(HObject halconImage, bool isColor)
+        {
+            if (halconImage == null)
+            {
+                throw new ArgumentNullException("halconImage");
+            }
+
+            HTuple pointerRed = null;
+            HTuple pointerGreen = null;
+            HTuple pointerBlue = null;
+            HTuple type;
+            HTuple width;
+            HTuple height;
+
+            // Halcon
+            var pixelFormat = (isColor) ? PixelFormat.Format32bppRgb : PixelFormat.Format8bppIndexed;
+            if (isColor)
+                HOperatorSet.GetImagePointer3(halconImage, out pointerRed, out pointerGreen, out pointerBlue, out type, out width, out height);
+            else
+                HOperatorSet.GetImagePointer1(halconImage, out pointerBlue, out type, out width, out height);
+
+
+            Bitmap bitmap = new Bitmap((Int32)width, (Int32)height, pixelFormat);
+
+            BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadWrite, bitmap.PixelFormat);
+            {
+                int bytes = Math.Abs(bmpData.Stride) * bitmap.Height;
+                byte[] rgbValues = new byte[bytes];
+
+                lock (rgbValues)
+                {
+                    IntPtr ptrB = new IntPtr(pointerBlue);
+                    IntPtr ptrG = IntPtr.Zero;
+                    IntPtr ptrR = IntPtr.Zero;
+                    if (pointerGreen != null) ptrG = new IntPtr(pointerGreen);
+                    if (pointerRed != null) ptrR = new IntPtr(pointerRed);
+                    int channels = (isColor) ? 3 : 1;
+
+                    // Stride
+                    int strideTotal = Math.Abs(bmpData.Stride);
+                    int unmapByes = strideTotal - ((int)width * channels);
+                    for (int i = 0, offset = 0; i < bytes; i += channels, offset++)
+                    {
+                        if ((offset + 1) % width == 0)
+                        {
+                            i += unmapByes;
+                        }
+
+                        rgbValues[i] = Marshal.ReadByte(ptrB, offset);
+                        if (isColor)
+                        {
+                            rgbValues[i + 1] = Marshal.ReadByte(ptrG, offset);
+                            rgbValues[i + 2] = Marshal.ReadByte(ptrR, offset);
+                        }
+
+                    }
+
+                    Marshal.Copy(rgbValues, 0, bmpData.Scan0, bytes);
+                }
+
+
+            }
+
+            bitmap.UnlockBits(bmpData);
+            return bitmap;
+        }
+
+        public static Bitmap HImageToBitmap(HImage ho_Image)
+        {
+            int iWidth, iHeight, iNumChannels;
+            IntPtr ip_R, ip_G, ip_B, ip_Gray;
+            String sType;
+            // null return object
+            Bitmap bitmap = null;
+            try
+            {
+                //
+                // Note that pixel data is stored differently in System.Drawing.Bitmap
+                // a) Stride:
+                // stride is the width, rounded up to a multiple of 4 (padding)
+                // Size of data array HALCON: heigth*width, Bitmap: heigth*stride
+                // compare: https://msdn.microsoft.com/en-us/library/zy1a2d14%28v=vs.110%29.aspx
+                // b) RGB data
+                // HALCON: three arrays, Bitmap: one array (alternating red/green/blue)
+                iNumChannels = ho_Image.CountChannels();
+                if (iNumChannels != 1 && iNumChannels != 3)
+                    throw new Exception("Conversion of HImage to Bitmap failed. Number of channels of the HImage is: " +
+                        iNumChannels + ". Conversion rule exists only for images with 1 or 3 chanels");
+                if (iNumChannels == 1)
+                {
+                    //
+                    // 1) Get the image pointer
+                    ip_Gray = ho_Image.GetImagePointer1(out sType, out iWidth, out iHeight);
+                    //
+                    // 2) Calculate the stride
+                    int iPadding = (4 - (iWidth % 4)) % 4;
+                    int iStride = iWidth + iPadding;
+                    //
+                    // 3) Create a new gray Bitmap object, allocating the necessary (managed) memory 
+                    bitmap = new Bitmap(iWidth, iHeight, PixelFormat.Format8bppIndexed);
+                    // note for high performance: in case of padding=0, image can be copied by reference.
+                    // however, then the bitmap's validity relies on the HImage lifetime.
+                    // bitmap = new Bitmap(iWidth, iHeight, iWidth, PixelFormat.Format8bppIndexed, ip_Gray);
+                    //
+                    // 4) Copy the image data directly into the bitmap data object, re-arranged in the required bitmap order
+                    // BitmapData lets us access the data in memory
+                    BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, iWidth, iHeight),
+                        ImageLockMode.WriteOnly, bitmap.PixelFormat);
+                    // System.Threading.Tasks.Parallel processing requires .NET framework >= 4.0 
+                    Parallel.For(0, iHeight, r =>
+                    {
+                        IntPtr posRead = ip_Gray + r * iWidth;
+                        IntPtr posWrite = bmpData.Scan0 + r * iStride;
+                        for (int c = 0; c < iWidth; c++)
+                            Marshal.WriteByte((IntPtr)posWrite, c, Marshal.ReadByte((IntPtr)posRead, c));
+                    });
+                    //
+                    // 5) Let the windows memory management take over control
+                    bitmap.UnlockBits(bmpData);
+                    //
+                    // 6) Adjust palette to grayscale (linearized grayscale)
+                    // ColorPalette has no constructor -> obtain it from the static member
+                    ColorPalette cp_P = bitmap.Palette;
+                    for (int i = 0; i < 256; i++)
+                    {
+                        cp_P.Entries[i] = System.Drawing.Color.FromArgb(i, i, i);
+                    }
+                    bitmap.Palette = cp_P;
+                }
+                if (iNumChannels == 3)
+                {
+                    //
+                    // 1) Get the image pointer
+                    ho_Image.GetImagePointer3(out ip_R, out ip_G, out ip_B, out sType, out iWidth, out iHeight);
+                    //
+                    // 2) Calculate the stride
+                    int iPadding = (4 - ((iWidth * 3) % 4)) % 4;
+                    int iStride = iWidth * 3 + iPadding;
+                    //
+                    // 3) Create a new RGB Bitmap object, allocating the necessary (managed) memory 
+                    bitmap = new Bitmap(iWidth, iHeight, PixelFormat.Format24bppRgb);
+                    //
+                    // 4) Copy the image data directly into the bitmap data object, re-arranged in the required bitmap order
+                    // BitmapData lets us access the data in memory
+                    BitmapData bmpData = bitmap.LockBits(new Rectangle(0, 0, iWidth, iHeight),
+                    ImageLockMode.WriteOnly, bitmap.PixelFormat);
+                    Parallel.For(0, iHeight, r =>
+                    {
+                        IntPtr posReadR = (IntPtr)((long)ip_R + r * iWidth);
+                        IntPtr posReadG = (IntPtr)((long)ip_G + r * iWidth);
+                        IntPtr posReadB = (IntPtr)((long)ip_B + r * iWidth);
+                        IntPtr posWrite = (IntPtr)((long)bmpData.Scan0 + r * iStride);
+                        for (int c = 0; c < iWidth; c++)
+                        {
+                            Marshal.WriteByte(posWrite, 3 * c, Marshal.ReadByte(posReadB, c));
+                            Marshal.WriteByte(posWrite, 3 * c + 1, Marshal.ReadByte(posReadG, c));
+                            Marshal.WriteByte(posWrite, 3 * c + 2, Marshal.ReadByte(posReadR, c));
+                        }
+                    });
+                    //
+                    // 5) Let the windows memory management take over control
+                    bitmap.UnlockBits(bmpData);
+
+
+                }
+
+                GC.Collect();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Conversion of HImage to Bitmap failed.", ex);
+            }
+            return bitmap;
+        }
+
+        public void HObject2Bitmap(HObject image, out Bitmap bitmap)
+        {
+            HTuple hpoint, type, width, height;
+            const int Alpha = 255;
+            HOperatorSet.GetImagePointer1(image, out hpoint, out type, out width, out height);
+            bitmap = new Bitmap(width, height, PixelFormat.Format8bppIndexed);
+            ColorPalette pal = bitmap.Palette;
+            for (int i = 0; i < 255; i++)
+            {
+                pal.Entries[i] = System.Drawing.Color.FromArgb(Alpha, i, i, i);
+            }
+            bitmap.Palette = pal;
+            Rectangle rect = new Rectangle(0, 0, width, height);
+            BitmapData bitmapData = bitmap.LockBits(rect, ImageLockMode.WriteOnly, PixelFormat.Format8bppIndexed);
+            int pixelSize = Bitmap.GetPixelFormatSize(bitmapData.PixelFormat) / 8;
+            IntPtr intPtr1 = bitmapData.Scan0;
+            IntPtr intPtr2 = hpoint;
+            int bytes = width * height;
+            byte[] rgbvalue = new byte[bytes];
+            Marshal.Copy(intPtr2, rgbvalue, 0, bytes);
+            Marshal.Copy(rgbvalue, 0, intPtr1, bytes);
+            bitmap.UnlockBits(bitmapData);
+        }
+
+        public static Bitmap HObject2Bitmap24(HObject hObject)
+        {
+            HTuple hpoint, type, width, height, width0, height0;
+            HObject interImage = new HObject();
+            HOperatorSet.GetImageSize(hObject, out width0, out height0);
+            HOperatorSet.InterleaveChannels(hObject, out interImage, "rgb", 4 * width0, 0);
+            HOperatorSet.GetImagePointer1(interImage, out hpoint, out type, out width, out height);
+            IntPtr ptr = hpoint;
+            Bitmap bitmap = new Bitmap(width / 4, height, width, PixelFormat.Format24bppRgb, ptr);
+            GC.Collect();
+            return bitmap;
+
+        }
+
+        private void hobject_convert_Click(object sender, RoutedEventArgs e)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+
+            // 启动计时器
+            stopwatch.Start();
+            HImage hImage = new HImage(@"1.bmp");
+
+            string filepath = @"1.bmp";
+
+            HObject hObject = ReadFileToHObject(filepath);
+
+
+            Bitmap bitmap;
+            HObject2Bitmap(hObject, out bitmap);
+
+
+            TimeSpan elapsedTime = stopwatch.Elapsed;
+            bitmap.Save(@"hobject_convert.bmp");
+            // 输出运行时间
+            Debug.WriteLine("hobject_conver黑白运行时间: " + elapsedTime.TotalMilliseconds);
+
+            hObject.Dispose();
+            hImage.Dispose();
+            bitmap.Dispose();
+        }
+
+        private void hobject_colorconvert_Click(object sender, RoutedEventArgs e)
+        {
+
+            Stopwatch stopwatch = new Stopwatch();
+
+            // 启动计时器
+            stopwatch.Start();
+            HImage hImage = new HImage(@"color.bmp");
+
+            string filepath = @"color.bmp";
+
+            HObject hObject = ReadFileToHObject(filepath);
+
+
+            Bitmap bitmap = HObject2Bitmap24(hObject);
+
+
+
+            TimeSpan elapsedTime = stopwatch.Elapsed;
+            bitmap.Save(@"hobject_convert_color.bmp",ImageFormat.Bmp);
+            // 输出运行时间
+            Debug.WriteLine("hobject_conver彩色运行时间: " + elapsedTime.TotalMilliseconds);
+
+            hObject.Dispose();
+            bitmap.Dispose();
+            hImage.Dispose();
         }
     }
 }

@@ -12,6 +12,8 @@
         <Button x:Name="pointer_test" Content="测试2" HorizontalAlignment="Left" Margin="213,75,0,0" VerticalAlignment="Top" Height="75" Width="106" Click="pointer_test_Click"/>
         <Button x:Name="gray_pointer" Content="灰度图指针测试" HorizontalAlignment="Center" Margin="0,75,0,0" VerticalAlignment="Top" Height="76" Width="124" Click="gray_pointer_Click"/>
         <Button x:Name="gray_pointer2" Content="灰度图指针测试2" HorizontalAlignment="Left" Margin="497,75,0,0" VerticalAlignment="Top" Height="76" Width="121" Click="gray_pointer2_Click"/>
+        <Button x:Name="hobject_convert" Content="hobject黑白测试" HorizontalAlignment="Left" Margin="84,182,0,0" VerticalAlignment="Top" Height="86" Width="108" Click="hobject_convert_Click"/>
+        <Button x:Name="hobject_colorconvert" Content="hobject彩色测试" HorizontalAlignment="Left" Margin="213,182,0,0" VerticalAlignment="Top" Height="86" Width="106" Click="hobject_colorconvert_Click"/>
 
     </Grid>
 </Window>
