@@ -170,13 +170,71 @@ namespace _10.ProcessImg
 
                     }
                     bitmap_init.UnlockBits(bitmapData);
+                   
 
                 }
                 else
                 {
                     BitmapData bitmapData = bitmap_init.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
                     {
+                        HObject ho_Image_Gray = null;
+                        HObject ho_ImageMean = null, ho_RegionDynThresh = null, ho_RegionOpening1 = null;
+                        HObject ho_RegionClosing = null, ho_Image1 = null, ho_ImageResult1 = null;
+                        HTuple hv_Width_Gray = new HTuple();
+                        HTuple hv_Height_Gray = new HTuple();
 
+                        HOperatorSet.GenEmptyObj(out ho_Image_Gray);
+                        HOperatorSet.GenEmptyObj(out ho_ImageMean);
+                        HOperatorSet.GenEmptyObj(out ho_RegionDynThresh);
+                        HOperatorSet.GenEmptyObj(out ho_RegionOpening1);
+                        HOperatorSet.GenEmptyObj(out ho_RegionClosing);
+                        HOperatorSet.GenEmptyObj(out ho_Image1);
+                        HOperatorSet.GenEmptyObj(out ho_ImageResult1);
+
+                        ho_Image_Gray.Dispose();
+                        HOperatorSet.GenImage1(out ho_Image_Gray, "byte", bitmap_init.Width, bitmap_init.Height, bitmapData.Scan0);
+                        hv_Width_Gray.Dispose(); hv_Height_Gray.Dispose();
+                        HOperatorSet.GetImageSize(ho_Image_Gray, out hv_Width_Gray, out hv_Height_Gray);
+                        ho_ImageMean.Dispose();
+                        HOperatorSet.MeanImage(ho_Image_Gray, out ho_ImageMean, 1000, 1000);
+                        ho_RegionDynThresh.Dispose();
+                        HOperatorSet.DynThreshold(ho_Image_Gray, ho_ImageMean, out ho_RegionDynThresh,
+                            4, "light");
+                        ho_RegionOpening1.Dispose();
+                        HOperatorSet.OpeningCircle(ho_RegionDynThresh, out ho_RegionOpening1, 3);
+                        ho_RegionClosing.Dispose();
+                        HOperatorSet.ClosingCircle(ho_RegionOpening1, out ho_RegionClosing, 120);
+                        ho_Image1.Dispose();
+                        HOperatorSet.GenImageConst(out ho_Image1, "byte", hv_Width_Gray, hv_Height_Gray);
+                        ho_ImageResult1.Dispose();
+                        HOperatorSet.PaintRegion(ho_RegionClosing, ho_Image1, out ho_ImageResult1,
+                            255, "fill");
+
+
+
+                        HObject2Bitmap(ho_ImageMean, out Bitmap bmp_ImageMead);
+                        bitmaps_show.Add(ImageControlShow(BitmapResize(bmp_ImageMead)));
+
+                        HObject2Bitmap(ho_Image_Gray, out Bitmap bmp_RegionDynThresh);
+                        bitmaps_show.Add(ImageControlShow(BitmapResize(bmp_RegionDynThresh)));
+
+                        HObject2Bitmap(ho_ImageResult1, out Bitmap bmp_ImageResult1);
+                        bitmaps_show.Add(ImageControlShow(BitmapResize(bmp_ImageResult1)));
+
+
+
+
+
+
+                        ho_Image_Gray.Dispose();
+                        ho_ImageMean.Dispose();
+                        ho_RegionDynThresh.Dispose();
+                        ho_RegionOpening1.Dispose();
+                        ho_RegionClosing.Dispose();
+                        ho_Image1.Dispose();
+                        ho_ImageResult1.Dispose();
+                        hv_Width_Gray.Dispose();
+                        hv_Height_Gray.Dispose();
 
 
 
@@ -184,6 +242,7 @@ namespace _10.ProcessImg
                     bitmap_init.UnlockBits(bitmapData);
                 }
                 img_show1.Source = bitmaps_show[CBox_ProcessImg.SelectedIndex];
+                //img_show1.Source = null;
                 // imageStream.Flush();
                 //bitmapResize.Dispose();
                 bitmap_init.Dispose();
@@ -228,7 +287,7 @@ namespace _10.ProcessImg
                 || format == PixelFormat.Format24bppRgb || format == PixelFormat.Format32bppPArgb;
         }
 
-        public Bitmap HObject2Bitmap24(HObject hObject)
+        public void HObject2Bitmap24(HObject hObject,out Bitmap bitmap)
         {
             try
             {
@@ -238,9 +297,9 @@ namespace _10.ProcessImg
                 HOperatorSet.InterleaveChannels(hObject, out interImage, "rgb", 4 * width0, 0);
                 HOperatorSet.GetImagePointer1(interImage, out hpoint, out type, out width, out height);
                 IntPtr ptr = hpoint;
-                Bitmap bitmap = new Bitmap(width / 4, height, width, PixelFormat.Format24bppRgb, ptr);
+                bitmap = new Bitmap(width / 4, height, width, PixelFormat.Format24bppRgb, ptr);
                 GC.Collect();
-                return bitmap;
+                
             }
             catch (Exception ex)
             {
@@ -273,11 +332,12 @@ namespace _10.ProcessImg
             Marshal.Copy(intPtr2, rgbvalue, 0, bytes);
             Marshal.Copy(rgbvalue, 0, intPtr1, bytes);
             bitmap.UnlockBits(bitmapData);
+            GC.Collect();
         }
 
         public Bitmap BitmapResize(Bitmap bitmap)
         {
-            Bitmap bitmapResize = new Bitmap(bitmap, 600, 600);
+            Bitmap bitmapResize = new Bitmap(bitmap, 400, 400);
             return bitmapResize;
         }
 
