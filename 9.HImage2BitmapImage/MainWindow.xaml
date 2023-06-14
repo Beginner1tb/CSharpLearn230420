@@ -5,15 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_9.HImage2BitmapImage"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="532,275,0,0" VerticalAlignment="Top" Height="91" Width="172" Click="Button_Click"/>
-        <Button Content="测试1" HorizontalAlignment="Left" Margin="84,74,0,0" VerticalAlignment="Top" Height="77" Width="108" Click="Button_Click_1"/>
-        <Button x:Name="pointer_test" Content="测试2" HorizontalAlignment="Left" Margin="213,75,0,0" VerticalAlignment="Top" Height="75" Width="106" Click="pointer_test_Click"/>
-        <Button x:Name="gray_pointer" Content="灰度图指针测试" HorizontalAlignment="Center" Margin="0,75,0,0" VerticalAlignment="Top" Height="76" Width="124" Click="gray_pointer_Click"/>
-        <Button x:Name="gray_pointer2" Content="灰度图指针测试2" HorizontalAlignment="Left" Margin="497,75,0,0" VerticalAlignment="Top" Height="76" Width="121" Click="gray_pointer2_Click"/>
-        <Button x:Name="hobject_convert" Content="hobject黑白测试" HorizontalAlignment="Left" Margin="84,182,0,0" VerticalAlignment="Top" Height="86" Width="108" Click="hobject_convert_Click"/>
-        <Button x:Name="hobject_colorconvert" Content="hobject彩色测试" HorizontalAlignment="Left" Margin="213,182,0,0" VerticalAlignment="Top" Height="86" Width="106" Click="hobject_colorconvert_Click"/>
+        Title="MainWindow" Height="641" Width="842">
 
-    </Grid>
+    <Viewbox>
+        <Grid  Width="842" Height="641">
+
+            <Button Content="Button" HorizontalAlignment="Left" Margin="532,275,0,0" VerticalAlignment="Top" Height="91" Width="172" Click="Button_Click"/>
+            <Button Content="测试1" HorizontalAlignment="Left" Margin="84,74,0,0" VerticalAlignment="Top" Height="77" Width="108" Click="Button_Click_1"/>
+            <Button x:Name="pointer_test" Content="测试2" HorizontalAlignment="Left" Margin="213,75,0,0" VerticalAlignment="Top" Height="75" Width="106" Click="pointer_test_Click"/>
+            <Button x:Name="gray_pointer" Content="灰度图指针测试" HorizontalAlignment="Center" Margin="0,75,0,0" VerticalAlignment="Top" Height="76" Width="124" Click="gray_pointer_Click"/>
+            <Button x:Name="gray_pointer2" Content="灰度图指针测试2" HorizontalAlignment="Left" Margin="497,75,0,0" VerticalAlignment="Top" Height="76" Width="121" Click="gray_pointer2_Click"/>
+            <Button x:Name="hobject_convert" Content="hobject黑白测试" HorizontalAlignment="Left" Margin="84,182,0,0" VerticalAlignment="Top" Height="86" Width="108" Click="hobject_convert_Click"/>
+            <Button x:Name="hobject_colorconvert" Content="hobject彩色测试" HorizontalAlignment="Left" Margin="213,182,0,0" VerticalAlignment="Top" Height="86" Width="106" Click="hobject_colorconvert_Click"/>
+            <Button x:Name="hobject_color_decompose" Content="hobject通道分离彩色测试" HorizontalAlignment="Center" Margin="0,182,0,0" VerticalAlignment="Top" Height="86" Width="124" Click="hobject_color_decompose_Click"/>
+            <Image x:Name="colorImage" HorizontalAlignment="Left" Height="114" Margin="213,320,0,0" VerticalAlignment="Top" Width="104"/>
+
+
+        </Grid>
+    </Viewbox>
 </Window>

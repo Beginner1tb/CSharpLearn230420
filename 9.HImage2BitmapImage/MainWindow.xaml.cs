@@ -206,9 +206,9 @@ namespace _9.HImage2BitmapImage
             GC.Collect();
         }
 
-       
 
-       
+
+
 
 
         private void pointer_test_Click(object sender, RoutedEventArgs e)
@@ -280,7 +280,7 @@ namespace _9.HImage2BitmapImage
 
         }
 
-       
+
 
         private void gray_pointer_Click(object sender, RoutedEventArgs e)
         {
@@ -319,7 +319,7 @@ namespace _9.HImage2BitmapImage
             //HObject hObject = ReadFileToHObject(filepath);
             HObject hObject = ConvertHImageToHObject(hImage);
             //Bitmap bitmap = ConvertHalconImageToBitmap(hObject, true);
-            Bitmap bitmap =HImageMethod_Parallel.HImageToBitmap(hImage);
+            Bitmap bitmap = HImageMethod_Parallel.HImageToBitmap(hImage);
 
 
             TimeSpan elapsedTime = stopwatch.Elapsed;
@@ -427,7 +427,7 @@ namespace _9.HImage2BitmapImage
             return bitmap;
         }
 
-        
+
 
 
 
@@ -474,12 +474,61 @@ namespace _9.HImage2BitmapImage
             HObject hObject = ReadFileToHObject(filepath);
 
 
-            Bitmap bitmap = HObjectConvert_UnsafePtr.HObject2Bitmap24Ptr(hObject);
+            // Bitmap bitmap = HObjectConvert_Halcon.HObject2Bitmap24(hObject);
+            //  Bitmap bitmap = HObjectConvert_UnsafePtr.HObject2Bitmap24Ptr(hObject);
+
+
+            Bitmap bitmap = HObjectConvert_Halcon.HObject2Bitmap24(hObject);
+
+            TimeSpan elapsedTime = stopwatch.Elapsed;
+            //   bitmap.Save(@"hobject_convert_color.bmp", ImageFormat.Bmp);
+            //int size = Marshal.SizeOf(bitmap);
+            // 输出运行时间
+            Debug.WriteLine("hobject_conver彩色运行时间: " + elapsedTime.TotalMilliseconds);
+            // Debug.WriteLine("bitmap大小" + size);
+            hObject.Dispose();
+
+            hImage.Dispose();
+
+            BitmapImage bitmapImage;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+
+                bitmap.Save(memoryStream, ImageFormat.Bmp);
+                memoryStream.Position = 0;
+                bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memoryStream;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+            }
+            colorImage.Source = bitmapImage;
+
+            //colorImage.Source = null;
+
+            bitmap.Dispose();
+            GC.Collect();
+        }
+
+        private void hobject_color_decompose_Click(object sender, RoutedEventArgs e)
+        {
+            Stopwatch stopwatch = new Stopwatch();
+
+            // 启动计时器
+            stopwatch.Start();
+            HImage hImage = new HImage(@"color.bmp");
+
+            string filepath = @"color.bmp";
+
+            HObject hObject = ReadFileToHObject(filepath);
+
+
+            Bitmap bitmap = HObjectConvert_Decompose3.HObjectToBitmap(hObject);
 
 
 
             TimeSpan elapsedTime = stopwatch.Elapsed;
-            bitmap.Save(@"hobject_convert_color.bmp", ImageFormat.Bmp);
+            bitmap.Save(@"hobject_convert_color_decompose.bmp", ImageFormat.Bmp);
             // 输出运行时间
             Debug.WriteLine("hobject_conver彩色运行时间: " + elapsedTime.TotalMilliseconds);
 
@@ -487,5 +536,7 @@ namespace _9.HImage2BitmapImage
             bitmap.Dispose();
             hImage.Dispose();
         }
+
+
     }
 }

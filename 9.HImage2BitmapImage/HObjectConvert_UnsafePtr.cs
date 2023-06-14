@@ -16,6 +16,7 @@ namespace _9.HImage2BitmapImage
 {
     public class HObjectConvert_UnsafePtr
     {
+        [Obsolete("Efficiency too low")]
         public static Bitmap HObject2Bitmap24Ptr(HObject hObject)
         {
             try
