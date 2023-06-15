@@ -250,6 +250,9 @@ namespace _8.DrawRoi
                 //Debug.WriteLine(startPoint_1.Y.ToString()+" "+roiRect_1.Height.ToString() + "   "+ Canvas.GetTop(bottomRect).ToString() + "   " + currentPosition.Y.ToString()); ;
 
 
+                //设置框体代号位置
+
+                Canvas.SetTop(tb_rect1, top - 35);
 
             }
         }
@@ -340,6 +343,11 @@ namespace _8.DrawRoi
                 Canvas.SetLeft(leftRect, left);
                 Canvas.SetLeft(topRect, left);
                 Canvas.SetLeft(bottomRect, left);
+
+                //设置框体代号位置
+
+                Canvas.SetLeft(tb_rect1, left);
+                // Canvas.SetTop(tb_rect1, marginTop - 35);
             }
         }
 
@@ -493,6 +501,11 @@ namespace _8.DrawRoi
                 Canvas.SetLeft(rightRect, marginLeft + roiRect_1.Width - 5);
                 Canvas.SetTop(rightRect, marginTop);
 
+
+                //设置框体代号位置
+
+                Canvas.SetLeft(tb_rect1, marginLeft);
+                Canvas.SetTop(tb_rect1, marginTop - 35);
             }
         }
 

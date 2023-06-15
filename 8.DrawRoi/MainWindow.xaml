@@ -45,7 +45,7 @@
                 <!--
                 MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown"
                 MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown" MouseMove="roiRect_1_MouseMove"-->
-
+                <TextBlock x:Name="tb_rect1" Canvas.Top="-30" Canvas.Left="0" TextWrapping="NoWrap" Text="框1" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Purple" FontSize="30"></TextBlock>
                 <Rectangle x:Name="topRect"  Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="5" Fill="Red" Visibility="Visible"  Canvas.Left="0" Canvas.Top="10"  Cursor="SizeNS" MouseLeftButtonDown="topRect_MouseLeftButtonDown" MouseMove="topRect_MouseMove" MouseLeftButtonUp="topRect_MouseLeftButtonUp"/>
                 <Rectangle x:Name="bottomRect" Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="5" Fill="Red" Visibility="Visible" Canvas.Left="0" Canvas.Top="105"  Cursor="SizeNS" MouseLeftButtonDown="bottomRect_MouseLeftButtonDown" MouseMove="bottomRect_MouseMove" MouseLeftButtonUp="bottomRect_MouseLeftButtonUp"/>
                 <Rectangle x:Name="leftRect" Width="5" Height="{Binding ElementName=roiRect_1, Path=ActualHeight}" Fill="Red" Canvas.Left="0" Canvas.Top="10" Visibility="Visible" Cursor="SizeWE" MouseLeftButtonDown="leftRect_MouseLeftButtonDown" MouseMove="leftRect_MouseMove" MouseLeftButtonUp="leftRect_MouseLeftButtonUp" />
