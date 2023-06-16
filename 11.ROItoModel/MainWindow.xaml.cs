@@ -13,6 +13,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using HalconDotNet;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using Point = System.Windows.Point;
+using PixelFormat = System.Drawing.Imaging.PixelFormat;
+using Microsoft.Win32;
 
 namespace _11.ROItoModel
 {
@@ -21,13 +28,12 @@ namespace _11.ROItoModel
     /// </summary>
     public partial class MainWindow : Window
     {
-        private bool isDrawing = false;
-        private Point startPoint;
-
 
         private bool isDragging = false;
         private Point startPoint_1;
         private FrameworkElement selectedRect;
+
+        string filepath;
 
         public MainWindow()
         {
@@ -42,7 +48,7 @@ namespace _11.ROItoModel
             isDragging = true;
             selectedRect = topRect;
             // Canvas.SetTop(bottomRect, Canvas.GetTop(topRect) + roiRect_1.Height-5);
-            ((Rectangle)sender).CaptureMouse();
+            ((System.Windows.Shapes.Rectangle)sender).CaptureMouse();
 
         }
 
@@ -337,10 +343,10 @@ namespace _11.ROItoModel
                 Canvas.SetTop(leftRect, marginTop);
 
                 Canvas.SetLeft(bottomRect, marginLeft);
-                Canvas.SetTop(bottomRect, marginTop + roiRect_1.Height - 5);
+                Canvas.SetTop(bottomRect, marginTop + roiRect_1.Height - 3);
 
 
-                Canvas.SetLeft(rightRect, marginLeft + roiRect_1.Width - 5);
+                Canvas.SetLeft(rightRect, marginLeft + roiRect_1.Width - 3);
                 Canvas.SetTop(rightRect, marginTop);
 
 
@@ -372,11 +378,180 @@ namespace _11.ROItoModel
             // 使用获取到的宽度和高度进行后续处理
             Debug.WriteLine("Image Width: " + width);
             Debug.WriteLine("Image Height: " + height);
-            MessageBox.Show($"左上角X偏移：{Canvas.GetLeft(roiRect_1) * width / 400}\n" +
-                $"左上角Y偏移：{Canvas.GetTop(roiRect_1) * height / 400}\n" +
-                $"右下角X偏移：{(Canvas.GetLeft(roiRect_1) + roiRect_1.Width) * width / 400}\n" +
-                $"右下角Y偏移：{(Canvas.GetTop(roiRect_1) + roiRect_1.Height) * height / 400}", "结果");
+            MessageBox.Show($"左上角X偏移：{Canvas.GetLeft(roiRect_1) * width / img1.Width}\n" +
+                $"左上角Y偏移：{Canvas.GetTop(roiRect_1) * height / img1.Height}\n" +
+                $"右下角X偏移：{(Canvas.GetLeft(roiRect_1) + roiRect_1.Width) * width / img1.Width}\n" +
+                $"右下角Y偏移：{(Canvas.GetTop(roiRect_1) + roiRect_1.Height) * height / img1.Height}", "结果");
         }
 
+        private void LoadImage_Click(object sender, RoutedEventArgs e)
+        {
+            
+            ///注意.Net 5下操作的不同
+            OpenFileDialog openFileDialog = new()
+            {
+                InitialDirectory = "D:\\TestFolder\\Image\\front\\",
+                Filter = "图像文件|*.bmp",
+                RestoreDirectory = true,
+            };
+
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                filepath = openFileDialog.FileName;
+
+                Bitmap bitmap_init = new Bitmap(filepath);
+                ///调整显示图像的大小
+                //Bitmap bitmapResize = new Bitmap(bitmap_init, 600, 600);
+                Bitmap bitmap_resize = BitmapResize(bitmap_init);
+
+                img1.Source = ImageControlShow(bitmap_resize);
+                System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bitmap_init.Width, bitmap_init.Height);
+                if (IsColorBitmap(bitmap_init))
+                {
+                    BitmapData bitmapData = bitmap_init.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+                    {
+                    }
+                    bitmap_init.UnlockBits(bitmapData);
+                }
+                else
+                {
+                    BitmapData bitmapData = bitmap_init.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+                    {
+                        // Local iconic variables 
+
+                        //HObject ho_OrignalZ, ho_ROI_0, ho_ImageReduced;
+                        //HObject ho_ImagePart;
+                        //// Initialize local and output iconic variables 
+                        //HOperatorSet.GenEmptyObj(out ho_OrignalZ);
+                        //HOperatorSet.GenEmptyObj(out ho_ROI_0);
+                        //HOperatorSet.GenEmptyObj(out ho_ImageReduced);
+                        //HOperatorSet.GenEmptyObj(out ho_ImagePart);
+                        //ho_OrignalZ.Dispose();
+                        //HOperatorSet.GenImage1(out ho_OrignalZ, "byte", bitmap_init.Width, bitmap_init.Height, bitmapData.Scan0);
+                        //ho_ROI_0.Dispose();
+                        //HOperatorSet.GenRectangle1(out ho_ROI_0, Canvas.GetTop(roiRect_1) * 5120 / 400, 
+                        //    Canvas.GetLeft(roiRect_1) * 5120 / 400,
+                        //    (Canvas.GetTop(roiRect_1) + roiRect_1.Height) * 5120 / 400,
+                        //    (Canvas.GetLeft(roiRect_1) + roiRect_1.Width) * 5120 / 400);
+                        ////HOperatorSet.GenRectangle1(out ho_ROI_0, 1407.4, 1942.74, 1695.17, 2306.79);
+                        //ho_ImageReduced.Dispose();
+                        //HOperatorSet.ReduceDomain(ho_OrignalZ, ho_ROI_0, out ho_ImageReduced);
+                        //ho_ImagePart.Dispose();
+                        //HOperatorSet.CropDomain(ho_ImageReduced, out ho_ImagePart);
+                        //HOperatorSet.WriteImage(ho_ImagePart, "bmp", 0, "C:/Users/LFLFLF/Desktop/crop.bmp");
+                        //ho_OrignalZ.Dispose();
+                        //ho_ROI_0.Dispose();
+                        //ho_ImageReduced.Dispose();
+                        //ho_ImagePart.Dispose();
+                    }
+                    bitmap_init.UnlockBits(bitmapData);
+                }
+                bitmap_init.Dispose();
+            }
+        }
+
+        public Bitmap BitmapResize(Bitmap bitmap)
+        {
+            Bitmap bitmapResize = new Bitmap(bitmap, 400, 400);
+            return bitmapResize;
+        }
+
+        bool IsColorBitmap(Bitmap bitmap)
+        {
+            PixelFormat format = bitmap.PixelFormat;
+            return format == PixelFormat.Format32bppArgb || format == PixelFormat.Format32bppRgb
+                || format == PixelFormat.Format24bppRgb || format == PixelFormat.Format32bppPArgb;
+        }
+
+        public BitmapImage ImageControlShow(Bitmap bitmap)
+        {
+            BitmapImage bitmapImage;
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+
+                bitmap.Save(memoryStream, ImageFormat.Jpeg);
+                memoryStream.Position = 0;
+                bitmapImage = new BitmapImage();
+                bitmapImage.BeginInit();
+                bitmapImage.StreamSource = memoryStream;
+                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapImage.EndInit();
+            }          
+            GC.Collect();
+            return bitmapImage;
+        }
+
+        private void CropImage_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Bitmap bitmap_init = new Bitmap(filepath);
+                System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bitmap_init.Width, bitmap_init.Height);
+                if (IsColorBitmap(bitmap_init))
+                {
+                    BitmapData bitmapData = bitmap_init.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+                    {
+                    }
+                    bitmap_init.UnlockBits(bitmapData);
+                }
+                else
+                {
+                    BitmapData bitmapData = bitmap_init.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+                    {
+                        // Local iconic variables 
+
+                        HObject ho_OrignalZ, ho_ROI_0, ho_ImageReduced;
+                        HObject ho_ImagePart;
+
+
+                        // Local control variables 
+                        HTuple hv_ModelID = new HTuple();
+
+                        // Initialize local and output iconic variables 
+
+
+                        HOperatorSet.GenEmptyObj(out ho_OrignalZ);
+                        HOperatorSet.GenEmptyObj(out ho_ROI_0);
+                        HOperatorSet.GenEmptyObj(out ho_ImageReduced);
+                        HOperatorSet.GenEmptyObj(out ho_ImagePart);
+                        ho_OrignalZ.Dispose();
+                        HOperatorSet.GenImage1(out ho_OrignalZ, "byte", bitmap_init.Width, bitmap_init.Height, bitmapData.Scan0);
+                        ho_ROI_0.Dispose();
+                        HOperatorSet.GenRectangle1(out ho_ROI_0, Canvas.GetTop(roiRect_1) * 5120 / img1.Height,
+                            Canvas.GetLeft(roiRect_1) * 5120 / img1.Width,
+                            (Canvas.GetTop(roiRect_1) + roiRect_1.Height) * 5120 / img1.Height,
+                            (Canvas.GetLeft(roiRect_1) + roiRect_1.Width) * 5120 / img1.Width);
+                        //HOperatorSet.GenRectangle1(out ho_ROI_0, 1407.4, 1942.74, 1695.17, 2306.79);
+                        ho_ImageReduced.Dispose();
+                        HOperatorSet.ReduceDomain(ho_OrignalZ, ho_ROI_0, out ho_ImageReduced);
+                        ho_ImagePart.Dispose();
+                        HOperatorSet.CropDomain(ho_ImageReduced, out ho_ImagePart);
+                        HOperatorSet.WriteImage(ho_ImagePart, "bmp", 0, "C:/Users/LFLFLF/Desktop/crop.bmp");
+                        using (HDevDisposeHelper dh = new HDevDisposeHelper())
+                        {
+                            hv_ModelID.Dispose();
+                            HOperatorSet.CreateShapeModel(ho_ImagePart, 4, (new HTuple(0)).TupleRad(), (new HTuple(360)).TupleRad()
+                                , "auto", "auto", "use_polarity", 30, 0, out hv_ModelID);
+                        }
+                        HOperatorSet.WriteShapeModel(hv_ModelID, "C:/Users/LFLFLF/Desktop/crop.shm");
+                        ho_OrignalZ.Dispose();
+                        ho_ROI_0.Dispose();
+                        ho_ImageReduced.Dispose();
+                        ho_ImagePart.Dispose();
+
+                        hv_ModelID.Dispose();
+                    }
+                    bitmap_init.UnlockBits(bitmapData);
+                }
+                bitmap_init.Dispose();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+            
+        }
     }
 }
