@@ -535,6 +535,9 @@ namespace _11.ROItoModel
                                 , "auto", "auto", "use_polarity", 30, 0, out hv_ModelID);
                         }
                         HOperatorSet.WriteShapeModel(hv_ModelID, "C:/Users/LFLFLF/Desktop/crop.shm");
+
+
+                        HOperatorSet.ClearShapeModel(hv_ModelID);
                         ho_OrignalZ.Dispose();
                         ho_ROI_0.Dispose();
                         ho_ImageReduced.Dispose();
