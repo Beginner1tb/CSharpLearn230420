@@ -30,6 +30,8 @@ namespace _12.ROIforImageLocation
     public partial class MainWindow : Window
     {
         string filepath;
+        HImage hImage1;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -113,12 +115,13 @@ namespace _12.ROIforImageLocation
         {
             try
             {
+                hImage1 = new HImage();
                 Bitmap bitmap_init = new Bitmap(filepath);
                 System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, bitmap_init.Width, bitmap_init.Height);
                 BitmapData bitmapData = bitmap_init.LockBits(rect, ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
                 {
                     // Local iconic variables 
-
+              
                     HObject ho_OrignalZ, ho_Region, ho_RegionOpening = null;
                     HObject ho_RegionClosing = null, ho_RegionFillUp2 = null, ho_ConnectedRegions = null;
                     HObject ho_SelectedRegions = null, ho_Contours = null, ho_ContCircle = null;
@@ -167,6 +170,11 @@ namespace _12.ROIforImageLocation
                     hv_coin_locate_clo_ker.Dispose();
                     hv_coin_locate_clo_ker = 7.5;
 
+
+                    hv_locate_retract_dis = int.Parse(Param_locate_retract_dis.Text);
+                    hv_coin_locate_thr = int.Parse(param_coin_locate_thr.Text); ;
+                    hv_coin_locate_open_ker = float.Parse(Param_coin_locate_open_ker.Text);
+                    hv_coin_locate_clo_ker = float.Parse(Param_coin_locate_clo_ker.Text);
 
                     //*******定位算法***********
                     ho_Region.Dispose();
@@ -217,18 +225,27 @@ namespace _12.ROIforImageLocation
                         }
 
                       // HObject2Bitmap(ho_ImagePart, out Bitmap bmp_ImageMead);
-                        HImage hImage1 = new HImage();
+         
 
                         //HObject2Himage(ho_ImagePart, ref hImage1);
-                        hImage1 = HObject2Himage(ho_ImagePart);
-                        Bitmap bmp_ImageMead = HImageToBitmap(hImage1);
-                        img1.Source = ImageControlShow(bmp_ImageMead);
 
                         hv_NoCoin.Dispose();
                         hv_NoCoin = 0;
 
 
                     }
+
+                    Stopwatch stopwatch = new Stopwatch();
+                    stopwatch.Start();
+                    hImage1 = HObject2Himage(ho_ImagePart);
+                    Bitmap bmp_ImageMead = HImageToBitmap(hImage1);
+                    img1.Source = ImageControlShow(bmp_ImageMead);
+                    TimeSpan timeSpan = stopwatch.Elapsed;
+                    Debug.WriteLine("himage" + timeSpan.TotalMilliseconds);
+                    
+                   
+                    bmp_ImageMead.Dispose();
+                   
                     ho_OrignalZ.Dispose();
                     ho_Region.Dispose();
                     ho_RegionOpening.Dispose();
@@ -259,10 +276,13 @@ namespace _12.ROIforImageLocation
                     hv_Column1.Dispose();
                     hv_Row2.Dispose();
                     hv_Column2.Dispose();
+                   
 
                 }
                 bitmap_init.UnlockBits(bitmapData);
-
+                bitmap_init.Dispose();
+                hImage1.Dispose();
+                
             }
             catch (Exception)
             {
