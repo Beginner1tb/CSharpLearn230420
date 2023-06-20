@@ -477,8 +477,13 @@ namespace _9.HImage2BitmapImage
             // Bitmap bitmap = HObjectConvert_Halcon.HObject2Bitmap24(hObject);
             //  Bitmap bitmap = HObjectConvert_UnsafePtr.HObject2Bitmap24Ptr(hObject);
 
+            //HImage hImage1 = new HImage();
+            //hImage1 = HObjectToHImage.HObject2BitmapRGB(hObject);
+
 
             Bitmap bitmap = HObjectConvert_Halcon.HObject2Bitmap24(hObject);
+            //Bitmap bitmap = HImageMethod_Parallel.HImageToBitmap(hImage1);
+
 
             TimeSpan elapsedTime = stopwatch.Elapsed;
             //   bitmap.Save(@"hobject_convert_color.bmp", ImageFormat.Bmp);
