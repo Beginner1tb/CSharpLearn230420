@@ -17,7 +17,7 @@
         <TextBox 
         HorizontalAlignment="Left" Margin="444,176,0,0" 
         Text="{Binding Person.Age}" TextWrapping="Wrap" VerticalAlignment="Top" Width="103" Height="49"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="121,130,0,0" VerticalAlignment="Top" Height="95" Width="107" Click="Button_Click"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="156,165,0,0" VerticalAlignment="Top" Height="95" Width="107" Click="Button_Click"/>
     </Grid>
 
 
