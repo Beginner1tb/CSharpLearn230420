@@ -31,7 +31,8 @@ namespace _13.MVVM_Learn01
             //MainViewModel mainViewModel = (MainViewModel)DataContext;
             //mainViewModel.MyProperty = DateTime.Now.ToString("ss:ffff");
             PersonViewModel personViewModel = (PersonViewModel)DataContext;
-            personViewModel.Person.Age = 9999;
+            Random random = new Random();
+            personViewModel.Person.Age = random.Next(0,30);
             
 
             
