@@ -1,0 +1,84 @@
+﻿<Window x:Class="_12.ROIforImageLocation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_12.ROIforImageLocation"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <Grid>
+        <Button x:Name="LoadImage" Content="加载图片" HorizontalAlignment="Left" Margin="41,32,0,0" VerticalAlignment="Top" Height="56" Width="100" Click="LoadImage_Click" />
+        <Button x:Name="CropImage" Content="切图和显示结果"  HorizontalAlignment="Left" Margin="291,32,0,0" VerticalAlignment="Top" Height="56" Width="109" Click="CropImage_Click"/>
+
+        <Border HorizontalAlignment="Left" Height="400" Margin="41,146,0,0" VerticalAlignment="Top" Width="400"
+                    BorderThickness="1" BorderBrush="Black">
+        </Border>
+        <Image x:Name="img1" HorizontalAlignment="Left" Height="400" Margin="41,146,0,0" 
+                   VerticalAlignment="Top" Width="400"
+                   Stretch="Fill"
+                   ></Image>
+
+        <TreeView Margin="479,146,52,39" TextBlock.FontSize="15">
+            <TreeViewItem Header="参数" IsExpanded="True">
+                <TreeViewItem Header="定位参数" IsExpanded="True">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="定位缩进："/>
+                        <TextBox x:Name="Param_locate_retract_dis" HorizontalAlignment="Right" HorizontalContentAlignment="Right" 
+                                 Text="110" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="定位阈值："/>
+                        <TextBox x:Name="param_coin_locate_thr" HorizontalAlignment="Right" HorizontalContentAlignment="Right" 
+                                 Text="110" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="定位开核："/>
+                        <TextBox x:Name="Param_coin_locate_open_ker" HorizontalAlignment="Right" HorizontalContentAlignment="Right" 
+                                 Text="3.5" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="定位闭核："/>
+                        <TextBox x:Name="Param_coin_locate_clo_ker" HorizontalAlignment="Right" HorizontalContentAlignment="Right" 
+                                 Text="7.5" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                </TreeViewItem>
+                <TreeViewItem Header="设置类型2" IsExpanded="True">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="参数名称1："/>
+                        <TextBox HorizontalAlignment="Right" HorizontalContentAlignment="Right" Text="123" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="参数名称2："/>
+                        <TextBox HorizontalAlignment="Right" HorizontalContentAlignment="Right" Text="123" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="参数名称3："/>
+                        <TextBox HorizontalAlignment="Right" HorizontalContentAlignment="Right" Text="123" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="参数名称4："/>
+                        <TextBox HorizontalAlignment="Right" HorizontalContentAlignment="Right" Text="123" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                </TreeViewItem>
+                <TreeViewItem Header="设置类型3" IsExpanded="True">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="参数名称1："/>
+                        <TextBox HorizontalAlignment="Right" HorizontalContentAlignment="Right" Text="123" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="参数名称2："/>
+                        <TextBox HorizontalAlignment="Right" HorizontalContentAlignment="Right" Text="123" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="参数名称3："/>
+                        <TextBox HorizontalAlignment="Right" HorizontalContentAlignment="Right" Text="123" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="参数名称4："/>
+                        <TextBox HorizontalAlignment="Right" HorizontalContentAlignment="Right" Text="123" Width="50" TextWrapping="NoWrap"/>
+                    </StackPanel>
+                </TreeViewItem>
+            </TreeViewItem>
+        </TreeView>
+    </Grid>
+</Window>

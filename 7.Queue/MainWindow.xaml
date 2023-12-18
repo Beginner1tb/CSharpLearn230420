@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_7.Queue"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="450" Width="1046"
         MouseWheel="MagnifierCircle_MouseWheel">
     <Grid x:Name="grid" >
         <Image x:Name="Img1" HorizontalAlignment="Left" Height="198" Margin="100,84,0,0" VerticalAlignment="Top" Width="232" 
                MouseMove="Img1_MouseMove" MouseEnter="Img1_MouseEnter" MouseLeave="Img1_MouseLeave"/>
-        <Canvas IsHitTestVisible="False" Name="MagnifierPanel" Height="198" Margin="100,84,468,137"  Width="232">
-            <Ellipse Stroke="LightBlue" Name="MagnifierCircle" Height="150" Width="150" Loaded="MagnifierCircle_Loaded">
+        <Canvas IsHitTestVisible="False" 
+                HorizontalAlignment="Left" VerticalAlignment="Top"
+                Name="MagnifierPanel" Height="198" Margin="100,84,0,0"  Width="232">
+            <Ellipse Stroke="Transparent" Name="MagnifierCircle" Height="80" Width="80" Loaded="MagnifierCircle_Loaded">
                 <Ellipse.Fill>
                     <VisualBrush x:Name="MagnifierBrush" Visual="{Binding ElementName=Img1}"
                                  ViewboxUnits="Absolute"/>

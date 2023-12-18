@@ -1,0 +1,42 @@
+﻿<Window x:Class="_11.ROItoModel.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_11.ROItoModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="600" Width="800">
+    <Viewbox >
+        <Grid x:Name="grid" Width="800" Height="600">
+            <Border HorizontalAlignment="Left" Height="400" Margin="41,146,0,0" VerticalAlignment="Top" Width="400"
+                    BorderThickness="1" BorderBrush="Black">
+
+            </Border>
+            <!--Source="D://TestFolder//Image//front//Orignal-z.bmp"-->
+            <Image x:Name="img1" HorizontalAlignment="Left" Height="400" Margin="41,146,0,0" 
+                   VerticalAlignment="Top" Width="400"
+                   Stretch="Fill"
+                   ></Image>
+            <Canvas x:Name="canvas_1"
+                    HorizontalAlignment="Left" Height="400" Margin="41,146,0,0" 
+                    VerticalAlignment="Top" Width="400">
+                <Rectangle x:Name="roiRect_1" Stroke="Red" StrokeThickness="2" Visibility="Visible"
+                           Canvas.Top="10" Canvas.Left="0"
+                           Width="100" Height="100"                     
+                           Fill="Transparent"
+                           MouseLeftButtonDown="roiRect_1_MouseLeftButtonDown"
+                           MouseMove="roiRect_1_MouseMove"
+                           MouseLeftButtonUp="roiRect_1_MouseLeftButtonUp"
+                           />
+                <TextBlock x:Name="tb_rect1" Canvas.Top="-30" Canvas.Left="0" TextWrapping="NoWrap" Text="定位框1" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="Red" FontSize="30"></TextBlock>
+                <Rectangle x:Name="topRect"  Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="3" Fill="Red" Visibility="Visible"  Canvas.Left="0" Canvas.Top="10"  Cursor="SizeNS" MouseLeftButtonDown="topRect_MouseLeftButtonDown" MouseMove="topRect_MouseMove" MouseLeftButtonUp="topRect_MouseLeftButtonUp"/>
+                <Rectangle x:Name="bottomRect" Width="{Binding ElementName=roiRect_1, Path=ActualWidth}" Height="3" Fill="Red" Visibility="Visible" Canvas.Left="0" Canvas.Top="106"  Cursor="SizeNS" MouseLeftButtonDown="bottomRect_MouseLeftButtonDown" MouseMove="bottomRect_MouseMove" MouseLeftButtonUp="bottomRect_MouseLeftButtonUp"/>
+                <Rectangle x:Name="leftRect" Width="3" Height="{Binding ElementName=roiRect_1, Path=ActualHeight}" Fill="Red" Canvas.Left="0" Canvas.Top="10" Visibility="Visible" Cursor="SizeWE" MouseLeftButtonDown="leftRect_MouseLeftButtonDown" MouseMove="leftRect_MouseMove" MouseLeftButtonUp="leftRect_MouseLeftButtonUp" />
+                <Rectangle x:Name="rightRect" Width="3" Height="{Binding ElementName=roiRect_1, Path=ActualHeight}" Fill="Red" Canvas.Left="98" Canvas.Top="10" Visibility="Visible" Cursor="SizeWE" MouseLeftButtonDown="rightRect_MouseLeftButtonDown" MouseMove="rightRect_MouseMove" MouseLeftButtonUp="rightRect_MouseLeftButtonUp"/>
+            </Canvas>
+            <Button x:Name="SaveRect2" Content="当前框1的位置" HorizontalAlignment="Left" Margin="161,32,0,0" VerticalAlignment="Top" Height="56" Width="105" Click="SaveRect2_Click"/>
+            <Button x:Name="LoadImage" Content="加载图片" HorizontalAlignment="Left" Margin="41,32,0,0" VerticalAlignment="Top" Height="56" Width="100" Click="LoadImage_Click"/>
+            <Button x:Name="CropImage" Content="切图和创建定位建模"  HorizontalAlignment="Left" Margin="291,32,0,0" VerticalAlignment="Top" Height="56" Width="109" Click="CropImage_Click"/>
+        </Grid>
+    </Viewbox>
+</Window>

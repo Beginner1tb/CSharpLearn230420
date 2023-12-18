@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "9.HImage2BitmapImage": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
