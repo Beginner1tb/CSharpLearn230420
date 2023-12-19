@@ -59,9 +59,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "13.MVVM_Learn01", "13.MVVM_
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "14.Postgresql_Json", "14.Postgresql_Json\14.Postgresql_Json.csproj", "{A3E7A50C-1A03-495A-B42C-E6D0CEDD43AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "15.UnitTest", "15.UnitTest\15.UnitTest.csproj", "{FB7D805E-76EA-4EFB-9663-FB055BA77267}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "15.UnitTest", "15.UnitTest\15.UnitTest.csproj", "{FB7D805E-76EA-4EFB-9663-FB055BA77267}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "16.UnitTest.Test", "16.UnitTest.Test\16.UnitTest.Test.csproj", "{34E176FD-AFE1-48B9-86A6-24510471730E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "16.UnitTest.Test", "16.UnitTest.Test\16.UnitTest.Test.csproj", "{34E176FD-AFE1-48B9-86A6-24510471730E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "17.InterfaceChildView", "17.InterfaceChildView\17.InterfaceChildView.csproj", "{095272AA-C17B-4EC2-9679-B1C676AFF6E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -431,6 +433,18 @@ Global
 		{34E176FD-AFE1-48B9-86A6-24510471730E}.Release|x64.Build.0 = Release|Any CPU
 		{34E176FD-AFE1-48B9-86A6-24510471730E}.Release|x86.ActiveCfg = Release|Any CPU
 		{34E176FD-AFE1-48B9-86A6-24510471730E}.Release|x86.Build.0 = Release|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Debug|x64.Build.0 = Debug|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Debug|x86.Build.0 = Debug|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Release|x64.ActiveCfg = Release|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Release|x64.Build.0 = Release|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Release|x86.ActiveCfg = Release|Any CPU
+		{095272AA-C17B-4EC2-9679-B1C676AFF6E5}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
