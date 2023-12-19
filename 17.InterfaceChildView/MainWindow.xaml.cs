@@ -21,13 +21,13 @@ namespace _17.InterfaceChildView
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window,IMainView
     {
         private ChildWindow childWindow;
         public MainWindow()
         {
             InitializeComponent();
-            childWindow = new ChildWindow();
+            childWindow = new ChildWindow(this);
             childWindow.Show();
         }
 
@@ -57,6 +57,12 @@ namespace _17.InterfaceChildView
 
                 return bitmapimage;
             }
+        }
+
+        //实现IMainView接口的方法
+        public void UpdateMain(string content)
+        {
+            TB_Main.Text = content;
         }
     }
 }

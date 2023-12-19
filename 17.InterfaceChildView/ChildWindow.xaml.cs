@@ -20,11 +20,11 @@ namespace _17.InterfaceChildView
     /// </summary>
     public partial class ChildWindow : Window,IChildView
     {
-       
-        public ChildWindow()
+        private IMainView mainView;
+        public ChildWindow(IMainView mView)
         {
             InitializeComponent();
-            
+            mainView = mView;
         }
 
         public void ShowImg(BitmapImage bitmapimage)
@@ -32,9 +32,15 @@ namespace _17.InterfaceChildView
             Img1.Source = bitmapimage;
         }
 
+        //实现IChildView接口的方法
         public void UpdateContent(string content)
         {
             tb_child.Text = content;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            mainView.UpdateMain("22222");
         }
     }
 }

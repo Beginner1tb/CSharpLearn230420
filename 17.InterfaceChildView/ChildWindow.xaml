@@ -9,6 +9,7 @@
     <Grid>
         <TextBlock x:Name="tb_child" HorizontalAlignment="Left" Margin="74,66,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Height="93" Width="105"/>
         <Image x:Name="Img1" HorizontalAlignment="Left" Height="197" Margin="197,66,0,0" VerticalAlignment="Top" Width="219"/>
+        <Button Content="主界面应用" HorizontalAlignment="Left" Margin="44,248,0,0" VerticalAlignment="Top" Height="86" Width="82" Click="Button_Click"/>
 
     </Grid>
 </Window>
