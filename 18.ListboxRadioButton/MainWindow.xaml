@@ -1,0 +1,25 @@
+﻿<Window x:Class="_18.ListboxRadioButton.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:_18.ListboxRadioButton"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Viewbox>
+        <Grid Height="450" Width="800">
+            <ListBox x:Name="LB1" Margin="10,10,10,10" Width="100" Height="200" HorizontalAlignment="Left"
+                 SelectionChanged="LB1_SelectionChanged">
+                <TextBlock Text="111"/>
+                <TextBlock Text="222"/>
+                <TextBlock Text="333"/>
+                <TextBlock Text="444"/>
+                <!--<local:CustomRB Content="1111" ButtonLink="/ss.xaml"/>-->
+            </ListBox>
+            <!--<ScrollViewer x:Name="sv" Margin="200 0 0 0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+            <ContentControl x:Name="FR1"/>
+        </ScrollViewer>-->
+            <Frame x:Name="FR1" Margin="200 0 0 0" NavigationUIVisibility="Hidden"/>
+        </Grid>
+    </Viewbox>
+</Window>
