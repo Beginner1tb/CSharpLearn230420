@@ -9,6 +9,7 @@ namespace _19.Injection_Method
     public interface IData
     {
          string GetDate();
+        int ResNum(int a, int b);
     }
 
     public class Data1 : IData
@@ -16,6 +17,11 @@ namespace _19.Injection_Method
         public string GetDate()
         {
             return "GetData Method";
+        }
+
+        public int ResNum(int a, int b)
+        {
+            return a + b;
         }
     }
 }
