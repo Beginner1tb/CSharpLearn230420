@@ -16,12 +16,25 @@ namespace _19.Injection_Method
     {
         public string GetDate()
         {
-            return "GetData Method";
+            return "GetData Method1";
         }
 
         public int ResNum(int a, int b)
         {
             return a + b;
+        }
+    }
+
+    public class Data2 : IData
+    {
+        public string GetDate()
+        {
+            return "GetData Method2";
+        }
+
+        public int ResNum(int a, int b)
+        {
+            return a + b+10000;
         }
     }
 }
