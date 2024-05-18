@@ -12,25 +12,30 @@ namespace _19.Injection_Method
             GenericData genericData = new GenericData(data1);
             genericData.WriteData();
             genericData.PubResult(1, 2);
-
+            Console.WriteLine("---------------------");
             Data2 data2 = new Data2();
             GenericData2 genericData2 = new GenericData2(data2);
             genericData2.WriteData();
             genericData2.PubResult(1, 2);
 
-
+            Console.WriteLine("---------------------");
 
             //构造函数注入方式,注意Data1是IData的实现，与基类和派生类的写法相同，都是实现了多态性
             IData data = new Data1();
             DataManager dataManager = new DataManager(data);
             dataManager.WriteData();
             dataManager.PubResult(2, 3);
-
+            Console.WriteLine("---------------------");
             //注意此处只修改了new Data2(),指定IData的实现类和传入的参数即可，不需要更改应用方法所在的类
             IData data22 = new Data2();
             DataManager dataManager2 = new DataManager(data22);
             dataManager2.WriteData();
             dataManager2.PubResult(2, 3);
+
+            Console.WriteLine("---------------------");
+            string s = nameof(Data1);
+            Console.WriteLine(nameof(Data1));
+
         }
     }
 
