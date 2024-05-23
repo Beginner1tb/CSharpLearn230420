@@ -12,12 +12,12 @@
     <Grid>
         <Button
             Width="118"
-            Height="76"
+            Height="48"
             Margin="69,76,0,0"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Click="Button_Click"
-            Content="Single Task" />
+            Content="Single Task Run" />
         <TextBlock
             x:Name="Text1"
             Width="153"
@@ -27,6 +27,14 @@
             VerticalAlignment="Top"
             Text="TextBlock"
             TextWrapping="Wrap" />
+        <Button
+            Width="118"
+            Height="48"
+            Margin="69,152,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            x:Name="CancelButton"
+            Content="Single Task Cancel" Click="CancelButton_Click" />
 
     </Grid>
 </Window>
