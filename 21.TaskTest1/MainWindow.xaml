@@ -35,6 +35,14 @@
             VerticalAlignment="Top"
             x:Name="CancelButton"
             Content="Single Task Cancel" Click="CancelButton_Click" />
+        <Button
+            Width="118"
+            Height="48"
+            Margin="69,232,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            x:Name="SingleTask2"
+            Content="Single Task2 Start" Click="SingleTask2_Click" />
 
     </Grid>
 </Window>

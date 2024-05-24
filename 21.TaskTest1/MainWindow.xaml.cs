@@ -102,7 +102,44 @@ namespace _21.TaskTest1
             if (isTaskRunning && cancellationTokenSource != null)
             {
                 cancellationTokenSource.Cancel();
-                
+
+            }
+        }
+
+        //功能与上述代码段相同
+        private void SingleTask2_Click(object sender, RoutedEventArgs e)
+        {
+            if (isTaskRunning)
+            {
+                //
+                Task task = Task.Run(() =>
+                {
+                    //注意try-catch要在Task内部，外部捕捉不到异常
+                    try
+                    {
+                        // 模拟长时间运行的任务
+                        for (int i = 0; i < 10; i++)
+                        {
+                            // 检查取消请求
+                            if (cancellationTokenSource.Token.IsCancellationRequested)
+                            {
+                                Console.WriteLine("任务被取消");
+                                //需要通过ThrowIfCancellationRequested()抛出异常，否则不会停止
+                                cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                            }
+
+                            Debug.WriteLine("任务进行中...");
+                            Thread.Sleep(1000); // 模拟工作
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Message);
+                    }
+                    Debug.WriteLine("任务完成");
+                }, cancellationTokenSource.Token);
+
+
             }
         }
     }
