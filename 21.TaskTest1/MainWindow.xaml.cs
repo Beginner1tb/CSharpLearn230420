@@ -24,11 +24,53 @@ namespace _21.TaskTest1
     {
         private bool isTaskRunning;
         private CancellationTokenSource cancellationTokenSource;
+        private Task t1;
         public MainWindow()
         {
             InitializeComponent();
             isTaskRunning = false;
             cancellationTokenSource = new CancellationTokenSource();
+
+            //CancelTest1();
+        }
+        
+        private async void CancelTest1()
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            CancellationToken token = cts.Token;
+
+
+            Task task = Task.Run(() =>
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    // 检查取消请求
+                    if (token.IsCancellationRequested)
+                    {
+                        Debug.WriteLine("任务取消请求已接收");
+                        //注意，在debug模式下会直接抛出异常终止，运行模式下不会
+                        token.ThrowIfCancellationRequested();
+                    }
+
+                    Debug.WriteLine("任务进行中...");
+                    Thread.Sleep(1000); // 模拟工作
+                }
+
+                Debug.WriteLine("任务完成");
+            }, token);
+
+            await Task.Delay(3000);
+            cts.Cancel();
+
+
+            try
+            {
+                await task;
+            }
+            catch (Exception)
+            {
+                Debug.WriteLine("任务被取消");
+            }
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -42,9 +84,11 @@ namespace _21.TaskTest1
             isTaskRunning = true;
 
             cancellationTokenSource = new CancellationTokenSource();
+            t1 = RunTimerTask(cancellationTokenSource.Token);
+            var taskStatusUpdateTask = UpdateTaskStatus(t1);
             try
             {
-                await RunTimerTask(cancellationTokenSource.Token);
+                await t1;
             }
             catch (OperationCanceledException)
             {
@@ -53,6 +97,20 @@ namespace _21.TaskTest1
             finally
             {
                 isTaskRunning = false;
+                await taskStatusUpdateTask;
+            }
+
+
+        }
+
+        private async Task UpdateTaskStatus(Task task)
+        {
+            while (true)
+            {
+                var status = task.Status;
+                var taskid = task.Id;
+                Debug.WriteLine("TaskId: " + taskid.ToString() + "\nTaskstatus:" + status.ToString()); ;
+                await Task.Delay(500);
             }
         }
 
@@ -64,24 +122,25 @@ namespace _21.TaskTest1
                 {
                     Text1.Dispatcher.Invoke(new Action(() => { Text1.Text = DateTime.Now.ToString(); }));
                     cancellationToken.ThrowIfCancellationRequested();
-                    //await Task.Delay(1000);
+                    await Task.Delay(1000);
                     await Task.Delay(1000, cancellationToken);
 
                     #region await测试
-                    ////try
-                    ////{
-                    ////    //await处抛出TaskCanceledException
-                    ////    await Task.Delay(1000, cancellationToken);
-                    ////}
-                    ////catch (Exception ex)
-                    ////{
+                    //try
+                    //{
+                    //    //await处抛出TaskCanceledException
+                    //    await Task.Delay(1000, cancellationToken);
+                    //}
+                    //catch (Exception ex)
+                    //{
 
-                    ////    MessageBox.Show("Canceled:   " + ex.Message);
-                    ////    //抛出异常后如果不跳出，则会继续执行
-                    ////    //return;
-                    ////}
+                    //    MessageBox.Show("Canceled:   " + ex.Message);
+                    //    //抛出异常后如果不跳出，则会继续执行
+                    //    //return;
+                    //}
                     #endregion
                     Debug.WriteLine($"Timer: {i + 1} seconds");
+
                 }
                 MessageBox.Show("Timer completed!");
             }
@@ -89,7 +148,8 @@ namespace _21.TaskTest1
             ////2.如果使用Task.Delay(1000),则在执行完1000ms延迟后再执行ThrowIfCancellationRequested，抛出的是OperationCanceledException
             ////3.注意，TaskCanceledException来自于OperationCanceledException,所以如果不catch，上面Button_Click都会catch到异常
             ////4.这里catch了Exception，所以Button_Click不会catch到异常
-            catch (Exception ex)
+            ////5.同样的问题，如果在Task内部捕捉到了TaskCanceledException异常，则此时Task的状态会变成RanToCompletion，外部不能捕捉到Task的Cancel状态
+            catch (OperationCanceledException ex)
             {
 
                 MessageBox.Show(ex.GetType().Name.ToString());
