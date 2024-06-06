@@ -9,9 +9,10 @@ namespace _22.TaskContinueTest1
         {
             ////Task.wait()方法会阻塞主线程，必须等执行完，尽量不使用
             ////可以不用改变程序段的返回值
-            ///如果中途打断可能引起死锁问题
-            ////尽量使用Task中的async/await方法
+            ////如果中途打断可能引起死锁问题
+            ////尽量使用Task中的async/await方法，如果使用async/await，返回值必须为Task
             //ExecuteTasksInSeries().Wait();
+
             await ExecuteTasksInSeries();
             await ExecuteTasksInSeries2();
         }
