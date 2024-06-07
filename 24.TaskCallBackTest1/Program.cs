@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 
 namespace _24.TaskCallBackTest1
@@ -13,11 +14,12 @@ namespace _24.TaskCallBackTest1
             CallBackTest(HandleCallBack, handleFunc, funcInt).Wait();
             ////这里直接运行Runtimer方法实际上由于主线程退出了，也看不到结果
             Task.Run(RunTimer);
+
         }
 
         private static int HandleCallBackInt()
         {
-            return 111;
+            return 333;
         }
 
         private static int HandleCallBackFunc(int arg)
@@ -32,7 +34,7 @@ namespace _24.TaskCallBackTest1
         }
         ////实际使用时，Action用于输出Task中某字段的数值
         ////Func可以向Task输入某个数值，输出某个数值好像无用
-        private static async Task CallBackTest(Action<int, int> callback, Func<int, int> callbackFunc, Func<int> callbackint)
+        private static async Task CallBackTest(Action<int, int> callback, Func<int, int> callbackFunc, Func<int> callBackInt)
         {
             Console.WriteLine("Task Starts");
             await RunTimer();
@@ -40,12 +42,12 @@ namespace _24.TaskCallBackTest1
 
             callback?.Invoke(99, 10);
             callbackFunc?.Invoke(999);
-            if (callbackint != null)
+            if (callBackInt != null)
             {
-                int i = callbackint.Invoke();
+                int i = callBackInt.Invoke();
                 Console.WriteLine("Input int " + i);
             }
-
+            
         }
 
         private static async Task RunTimer()
