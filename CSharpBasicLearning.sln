@@ -83,6 +83,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "25.ConcurrentTask1", "25.Co
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "26.BlockCollectionTest1", "26.BlockCollectionTest1\26.BlockCollectionTest1.csproj", "{138549C4-7906-475D-9001-AF356BF252B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "27.ConcurrentTcpClient", "27.ConcurrentTcpClient\27.ConcurrentTcpClient.csproj", "{C639853C-07CF-43B8-85B5-37771D82488D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -571,6 +573,18 @@ Global
 		{138549C4-7906-475D-9001-AF356BF252B5}.Release|x64.Build.0 = Release|Any CPU
 		{138549C4-7906-475D-9001-AF356BF252B5}.Release|x86.ActiveCfg = Release|Any CPU
 		{138549C4-7906-475D-9001-AF356BF252B5}.Release|x86.Build.0 = Release|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Debug|x64.Build.0 = Debug|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Debug|x86.Build.0 = Debug|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Release|x64.ActiveCfg = Release|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Release|x64.Build.0 = Release|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Release|x86.ActiveCfg = Release|Any CPU
+		{C639853C-07CF-43B8-85B5-37771D82488D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
