@@ -45,7 +45,7 @@ namespace _29.protobufTest1
 
         static void ImageTest()
         {
-            string imagePath = "C:\\Users\\LFLFLF\\Desktop\\color.bmp";
+            string imagePath = "./color.bmp";
             byte[] imageBytes = File.ReadAllBytes(imagePath);
 
             // 创建ImageMessage并设置图片数据
@@ -70,7 +70,7 @@ namespace _29.protobufTest1
             }
 
             // 将字节数组保存为图片文件
-            string outputImagePath = "C:\\Users\\LFLFLF\\Desktop\\color1111.bmp";
+            string outputImagePath = "./color1111.bmp";
             File.WriteAllBytes(outputImagePath, deserializedImageMessage.ImageData.ToByteArray());
 
             Console.WriteLine("图片传递完成并保存到 " + outputImagePath);
