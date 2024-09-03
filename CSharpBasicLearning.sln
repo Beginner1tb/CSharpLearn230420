@@ -77,15 +77,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "22.TaskContinueTest1", "22.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "23.TaskFactotyTest1", "23.TaskFactotyTest1\23.TaskFactotyTest1.csproj", "{0EBFA080-EE69-436E-89A5-06646F835BEB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "24.TaskCallBackTest1", "24.TaskCallBackTest1\24.TaskCallBackTest1.csproj", "{B8C2B106-7CDD-4F35-89EE-6CC0AA2073B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "24.TaskCallBackTest1", "24.TaskCallBackTest1\24.TaskCallBackTest1.csproj", "{B8C2B106-7CDD-4F35-89EE-6CC0AA2073B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "25.ConcurrentTask1", "25.ConcurrentTask1\25.ConcurrentTask1.csproj", "{41389573-CC71-410A-A5FD-EA61BDE5C369}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "25.ConcurrentTask1", "25.ConcurrentTask1\25.ConcurrentTask1.csproj", "{41389573-CC71-410A-A5FD-EA61BDE5C369}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "26.BlockCollectionTest1", "26.BlockCollectionTest1\26.BlockCollectionTest1.csproj", "{138549C4-7906-475D-9001-AF356BF252B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "26.BlockCollectionTest1", "26.BlockCollectionTest1\26.BlockCollectionTest1.csproj", "{138549C4-7906-475D-9001-AF356BF252B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "27.ConcurrentTcpClient", "27.ConcurrentTcpClient\27.ConcurrentTcpClient.csproj", "{C639853C-07CF-43B8-85B5-37771D82488D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "27.ConcurrentTcpClient", "27.ConcurrentTcpClient\27.ConcurrentTcpClient.csproj", "{C639853C-07CF-43B8-85B5-37771D82488D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "28.FtpUploadTest1", "28.FtpUploadTest1\28.FtpUploadTest1.csproj", "{054A0DD7-5C73-4CE4-A84B-F3705D1040BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "28.FtpUploadTest1", "28.FtpUploadTest1\28.FtpUploadTest1.csproj", "{054A0DD7-5C73-4CE4-A84B-F3705D1040BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "29.protobufTest1", "29.protobufTest1\29.protobufTest1.csproj", "{0D67A399-B802-4BDA-B632-E4AA48AB0480}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -599,6 +601,18 @@ Global
 		{054A0DD7-5C73-4CE4-A84B-F3705D1040BF}.Release|x64.Build.0 = Release|Any CPU
 		{054A0DD7-5C73-4CE4-A84B-F3705D1040BF}.Release|x86.ActiveCfg = Release|Any CPU
 		{054A0DD7-5C73-4CE4-A84B-F3705D1040BF}.Release|x86.Build.0 = Release|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Debug|x64.Build.0 = Debug|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Debug|x86.Build.0 = Debug|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Release|x64.ActiveCfg = Release|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Release|x64.Build.0 = Release|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Release|x86.ActiveCfg = Release|Any CPU
+		{0D67A399-B802-4BDA-B632-E4AA48AB0480}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
