@@ -21,11 +21,9 @@ namespace _32.TCPprotobufServer1
         {
             ImageData receivedImageData = ImageReceiver.ReceiveImageData(5000);
 
-            string outputBmpPath = "output.bmp";
-
-            ProtobufImageHandler.RebuildBmpFromImageData(receivedImageData, outputBmpPath);
-
-
+            // string outputBmpPath = "output.bmp";
+            //
+            // ProtobufImageHandler.RebuildBmpFromImageData(receivedImageData, outputBmpPath);
         }
     }
 
@@ -36,42 +34,95 @@ namespace _32.TCPprotobufServer1
             // 开启TCP监听
             TcpListener listener = new TcpListener(IPAddress.Any, port);
             listener.Start();
-            Console.WriteLine("等待连接...");
+            Console.WriteLine("服务器启动，等待连接...");
 
-            using (TcpClient client = listener.AcceptTcpClient())
-            using (NetworkStream stream = client.GetStream())
+            while (true)
             {
-                // 接收数据大小
-                byte[] dataSize = new byte[4];
-                stream.Read(dataSize, 0, dataSize.Length);
-                int imageSize = BitConverter.ToInt32(dataSize, 0);
+                TcpClient client = listener.AcceptTcpClient();
 
-                // 接收图片数据
-                byte[] receivedData = new byte[imageSize];
-                int totalBytesRead = 0;
-                while (totalBytesRead < imageSize)
+                listener.Start();
+                Console.WriteLine("客户端已连接！");
+                Task.Run(() =>
                 {
-                    int bytesRead = stream.Read(receivedData, totalBytesRead, imageSize - totalBytesRead);
-                    totalBytesRead += bytesRead;
+                    if (client != null) HandleClient(client);
+                });
+            }
+
+            // using (TcpClient client = listener.AcceptTcpClient())
+            // using (NetworkStream stream = client.GetStream())
+            // {
+            //     // 接收数据大小
+            //     byte[] dataSize = new byte[4];
+            //     stream.Read(dataSize, 0, dataSize.Length);
+            //     int imageSize = BitConverter.ToInt32(dataSize, 0);
+            //
+            //     // 接收图片数据
+            //     byte[] receivedData = new byte[imageSize];
+            //     int totalBytesRead = 0;
+            //     while (totalBytesRead < imageSize)
+            //     {
+            //         int bytesRead = stream.Read(receivedData, totalBytesRead, imageSize - totalBytesRead);
+            //         totalBytesRead += bytesRead;
+            //     }
+            //
+            //     // 反序列化为ImageData
+            //     //BinaryFormatter formatter = new BinaryFormatter();
+            //     //using (MemoryStream memoryStream = new MemoryStream(receivedData))
+            //     //{
+            //     //    ImageData imageData = (ImageData)formatter.Deserialize(memoryStream);
+            //     //    return imageData;
+            //     //}
+            //
+            //     ImageData imageData = ImageData.Parser.ParseFrom(receivedData);
+            //     return imageData;
+            // }
+        }
+
+        private static void HandleClient(TcpClient client)
+        {
+            try
+            {
+                using (NetworkStream stream = client.GetStream())
+                {
+                    // 接收数据长度
+                    byte[] dataLengthBuffer = new byte[4];
+                    stream.Read(dataLengthBuffer, 0, dataLengthBuffer.Length);
+                    int dataLength = BitConverter.ToInt32(dataLengthBuffer, 0);
+
+                    // 接收图片数据
+                    byte[] receivedData = new byte[dataLength];
+                    int totalBytesRead = 0;
+                    while (totalBytesRead < dataLength)
+                    {
+                        int bytesRead = stream.Read(receivedData, totalBytesRead, dataLength - totalBytesRead);
+                        totalBytesRead += bytesRead;
+                    }
+
+                    // 反序列化为 ImageData 对象
+                    ImageData imageData = ImageData.Parser.ParseFrom(receivedData);
+
+                    // 生成一个唯一的文件名
+                    string outputImagePath = $"received_image_{DateTime.Now.ToString("yyyyMMddssfff")}.bmp";
+
+                    // 重构 BMP 图片并保存
+                    ProtobufImageHandler.RebuildBmpFromImageData(imageData, outputImagePath);
+
+                    Console.WriteLine($"图片数据接收并保存成功：{outputImagePath}");
                 }
-
-                // 反序列化为ImageData
-                //BinaryFormatter formatter = new BinaryFormatter();
-                //using (MemoryStream memoryStream = new MemoryStream(receivedData))
-                //{
-                //    ImageData imageData = (ImageData)formatter.Deserialize(memoryStream);
-                //    return imageData;
-                //}
-
-                ImageData imageData = ImageData.Parser.ParseFrom(receivedData);
-                return imageData;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"客户端处理错误: {ex.Message}");
+            }
+            finally
+            {
+                client.Close();
             }
         }
     }
 
     public static class ProtobufImageHandler
     {
-
         public static void RebuildBmpFromImageData(ImageData imageData, string outputPath)
         {
             int width = imageData.Width;
