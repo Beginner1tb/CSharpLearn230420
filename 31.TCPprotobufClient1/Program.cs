@@ -87,7 +87,7 @@ namespace _31.TCPprotobufClient1
                 // 创建一维数组来存储像素数据
                 byte[] pixelArray = new byte[byteCount];
                 Marshal.Copy(bmpData.Scan0, pixelArray, 0, byteCount);
-
+               
                 // 解锁位图
                 bmp.UnlockBits(bmpData);
 
@@ -98,6 +98,7 @@ namespace _31.TCPprotobufClient1
                     Height = height,
                     Format = format.ToString(),  // 保存格式信息为字符串
                     PixelArray = ByteString.CopyFrom(pixelArray)  // 将字节数组存储到Protobuf的bytes类型
+                    //注意这里的类型是ByteString的不可变数组，原因见Google Protocol Buffers
                 };
 
                 return imageData;

@@ -128,6 +128,26 @@ namespace _32.TCPprotobufServer1
             int width = imageData.Width;
             int height = imageData.Height;
 
+            string str = imageData.Format;
+
+            try
+            {
+                // 使用 Enum.Parse 将字符串转换为 PixelFormat 枚举值
+                PixelFormat pixelFormat = (PixelFormat)Enum.Parse(typeof(PixelFormat), str);
+
+                // 输出转换后的 PixelFormat
+                Console.WriteLine("字符串对应的 PixelFormat: " + pixelFormat);
+
+                // 检查是否为 Format24bppRgb
+                if (pixelFormat == PixelFormat.Format24bppRgb)
+                {
+                    Console.WriteLine("该PixelFormat是24位RGB格式。");
+                }
+            }
+            catch (ArgumentException)
+            {
+                Console.WriteLine("字符串无法转换为PixelFormat枚举。");
+            }
             // 创建新的位图对象，使用 24 位的 RGB 格式
             using (Bitmap bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb))
             {
