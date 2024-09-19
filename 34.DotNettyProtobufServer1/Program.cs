@@ -43,18 +43,19 @@ namespace _34.DotNettyProtobufServer1
             // Echo the message back,回写msg数据信息
             ctx.WriteAndFlushAsync(msg);
         }
-
-        public override void ChannelRead(IChannelHandlerContext ctx, object msg)
-        {
-
-            if (msg is IByteBuffer)
-            {
-                var messgae = (IByteBuffer)msg;
-                Console.WriteLine($"111111,Received {messgae.ToString(Encoding.UTF8)}");
-            }
-
-        }
-
+        
+        #region 优先传入ChannelRead，如果有特定格式需求则不能启用
+        // public override void ChannelRead(IChannelHandlerContext ctx, object msg)
+        // {
+        //     Console.WriteLine("22222");
+        //     if (msg is IByteBuffer)
+        //     {
+        //         var messgae = (IByteBuffer)msg;
+        //         Console.WriteLine($"111111,Received {messgae.ToString(Encoding.UTF8)}");
+        //     }
+        //
+        // }
+        #endregion
         public override void ChannelInactive(IChannelHandlerContext context)
         {
             // 客户端断开连接的处理
