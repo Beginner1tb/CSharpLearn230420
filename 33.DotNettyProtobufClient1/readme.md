@@ -52,6 +52,16 @@ public class ClientInitializer : ChannelInitializer<ISocketChannel>
 5. ``ClientHandler``
    代表数据处理的核心过程
 
+注意：``ProtobufVarint32FrameDecoder``和``ProtobufDecoder``是入站处理器，``ClientHandler``实际上也是入站处理器,``ProtobufEncoder``和``ProtobufVarint32LengthFieldPrepender``是出站处理器
+
+入站处理器的顺序 需要从低级别到高级别，通常是 解帧 -> 解码 -> 业务处理。
+
+出站处理器的顺序 需要从高级别到低级别，通常是 业务处理 -> 编码 -> 帧封装。
+
+如果顺序颠倒，会导致处理逻辑失败，因为处理器期望的输入格式无法得到保证。
+
+注意：以上是理论情况，但是目前位置还是按上述代码执行，后期再做修改
+
 #### 6. 数据处理的核心流程
 如上所示，``ClientHandler``是pipline中处理数据的核心流程，在此程序中其继承了``SimpleChannelInboundHandler<T>``类，``T``在这里代表的是protobuf的数据格式，这里是``MyMessage``，其完整代码如下：
 ````csharp
