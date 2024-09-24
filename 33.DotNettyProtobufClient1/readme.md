@@ -60,7 +60,15 @@ public class ClientInitializer : ChannelInitializer<ISocketChannel>
 
 如果顺序颠倒，会导致处理逻辑失败，因为处理器期望的输入格式无法得到保证。
 
-注意：以上是理论情况，但是目前位置还是按上述代码执行，后期再做修改
+注意：以上是理论情况，但是目前位置还是按上述代码执行，后期再做修改，比如本代码中的代码顺序是
+```csharp
+pipeline.AddLast(new ProtobufVarint32FrameDecoder());
+pipeline.AddLast(new ProtobufDecoder(MyMessage.Parser));
+pipeline.AddLast(new ProtobufVarint32LengthFieldPrepender());
+pipeline.AddLast(new ProtobufEncoder());
+pipeline.AddLast(new ClientHandler());
+```
+``ClientHandler``理论上是写数据帧，应该是出站业务处理的内容，但是此处只能放在最后，如果放在出站编码之前，则会无法发送
 
 #### 6. 数据处理的核心流程
 如上所示，``ClientHandler``是pipline中处理数据的核心流程，在此程序中其继承了``SimpleChannelInboundHandler<T>``类，``T``在这里代表的是protobuf的数据格式，这里是``MyMessage``，其完整代码如下：
@@ -90,3 +98,10 @@ public class ClientHandler : SimpleChannelInboundHandler<MyMessage>
 1. ``ChannelActive``方法代表该通道被激活时的处理过程，注意使用的是DotNetty的方法，比如发送数据就是``ctx.WriteAndFlushAsync(message);``
 2. ``ChannelRead0``方法代表获取到``T``数据时的处理过程，如果是``ChannelRead``方法则不再使用``ChannelRead0``
 3. ``ExceptionCaught``方法代表出现异常时的处理过程
+
+#### 7. 关闭连接的方式
+如果客户端发送完数据需要关闭连接，则需要在发送完成之后``await ctx.WriteAndFlushAsync(object message);``，相应的增加一个延迟，如果直接调用``ctx.CloseAsync()``，则会直接断开连接，会可能出现以下两种情况：
+
+1，客户端强行中断，客户端运行Task报错，2，服务端还在读写数据的时候中断导致服务端报错
+
+当然，也可以让服务端发送一个数据，然后关闭连接在``ChannelActive``方法中进行
