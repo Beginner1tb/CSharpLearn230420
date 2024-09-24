@@ -4,6 +4,8 @@ using DotNetty.Transport.Channels.Sockets;
 using Google.Protobuf;
 using Prototest;  // 使用你的Protobuf命名空间
 using System;
+using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using DotNetty.Buffers;
@@ -13,24 +15,52 @@ namespace _34.DotNettyProtobufServer1
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task  Main(string[] args)
         {
             var bossGroup = new MultithreadEventLoopGroup(1);
             var workerGroup = new MultithreadEventLoopGroup();
+            
+            var otherBossGroup = new MultithreadEventLoopGroup(1);
+            var otherWorkerGroup = new MultithreadEventLoopGroup();
+            
+            var udpWorkerGroup=new MultithreadEventLoopGroup();
+            IPEndPoint serverIpEndPoint = new IPEndPoint(IPAddress.Loopback, 8081);
             try
             {
+                
+                
                 var bootstrap = new ServerBootstrap();
                 bootstrap.Group(bossGroup, workerGroup)
                     .Channel<TcpServerSocketChannel>()
                     .ChildHandler(new ServerInitializer());
 
                 IChannel boundChannel = bootstrap.BindAsync(8080).Result;
-                Console.WriteLine("Server started.");
-                boundChannel.CloseCompletion.Wait();
+                Console.WriteLine("Server1 started.");
+                //await boundChannel.CloseCompletion;
+                
+                var otherBootstrap = new ServerBootstrap();
+                otherBootstrap.Group(otherBossGroup, otherWorkerGroup)
+                    .Channel<TcpServerSocketChannel>()
+                    .ChildHandler(new ServerInitializer());
+
+                IChannel otherBoundChannel = bootstrap.BindAsync(9090).Result;
+                Console.WriteLine("Server other started.");
+                
+                var udpBootstrap = new Bootstrap();  // UDP 不使用 ServerBootstrap
+                udpBootstrap.Group(udpWorkerGroup)
+                    .Channel<SocketDatagramChannel>()
+                    .Handler(new UdpServerInitializer());
+                var udpChannel=await udpBootstrap.BindAsync(serverIpEndPoint);
+                Console.WriteLine("Udp Server started.");  
+                
+                // 等待TCP通道关闭和其他服务
+                await Task.WhenAny(boundChannel.CloseCompletion, otherBoundChannel.CloseCompletion);
+
             }
             finally
             {
                 Task.WaitAll(bossGroup.ShutdownGracefullyAsync(), workerGroup.ShutdownGracefullyAsync());
+                Task.WaitAny(udpWorkerGroup.ShutdownGracefullyAsync());
             }
         }
     }
@@ -80,6 +110,34 @@ namespace _34.DotNettyProtobufServer1
             pipeline.AddLast(new ProtobufVarint32LengthFieldPrepender());
             pipeline.AddLast(new ProtobufEncoder());
             pipeline.AddLast(new ServerHandler());
+        }
+    }
+    
+    public class UdpServerInitializer : ChannelInitializer<IChannel>
+    {
+        protected override void InitChannel(IChannel channel)
+        {
+            // 添加处理器，处理收到的 UDP 数据
+            channel.Pipeline.AddLast(new UdpMessageHandler());
+        }
+    }
+
+    public class UdpMessageHandler : SimpleChannelInboundHandler<DatagramPacket>
+    {
+        protected override void ChannelRead0(IChannelHandlerContext context, DatagramPacket packet)
+        {
+            // 获取接收到的字节数据
+            var message = packet.Content.ToString(Encoding.UTF8);
+            Console.WriteLine($"Received UDP message: {message} from {packet.Sender}");
+        
+            // 这里可以添加处理逻辑，比如回应客户端等
+        }
+        
+
+        public override void ExceptionCaught(IChannelHandlerContext context, Exception exception)
+        {
+            Console.WriteLine($"Exception: {exception.Message}");
+            context.CloseAsync();
         }
     }
 }

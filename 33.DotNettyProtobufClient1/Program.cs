@@ -15,7 +15,7 @@ namespace _33.DotNettyProtobufClient1
     class Program
     {
         
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             
             var workerGroup = new MultithreadEventLoopGroup();
@@ -27,7 +27,10 @@ namespace _33.DotNettyProtobufClient1
                     .Handler(new ClientInitializer());
 
                 IChannel clientChannel = bootstrap.ConnectAsync(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8080)).Result;
-                clientChannel.CloseCompletion.Wait();
+                
+                //clientChannel.CloseCompletion.Wait();
+                //更优雅的方式，阻塞当前的tcp进程，等待结束
+                await Task.WhenAny(clientChannel.CloseCompletion);
             }
             finally
             {
@@ -45,7 +48,8 @@ namespace _33.DotNettyProtobufClient1
                 var message = new MyMessage { Id = 1, Content = "Hello, DotNetty Server!" };
                 await ctx.WriteAndFlushAsync(message);
                 Console.WriteLine("ChannelActive : "+DateTime.Now.Millisecond);
-                await Task.Delay(5).ContinueWith(t => ctx.CloseAsync());
+                //这里时间跟电脑和网络有关，不一定能保证读写通道完全关闭
+                await Task.Delay(100).ContinueWith(t => ctx.CloseAsync());
                 // 发送数据并等待完成
                 // await  ctx.WriteAndFlushAsync(message).ContinueWith(task =>
                 // {

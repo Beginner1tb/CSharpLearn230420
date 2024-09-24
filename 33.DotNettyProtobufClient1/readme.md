@@ -105,3 +105,5 @@ public class ClientHandler : SimpleChannelInboundHandler<MyMessage>
 1，客户端强行中断，客户端运行Task报错，2，服务端还在读写数据的时候中断导致服务端报错
 
 当然，也可以让服务端发送一个数据，然后关闭连接在``ChannelActive``方法中进行
+
+注意：延迟关闭时间跟电脑和网络有关，不一定能保证读写通道完全关闭
