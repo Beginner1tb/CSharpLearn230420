@@ -36,9 +36,20 @@ namespace _33.DotNettyProtobufClient1
             // {
             //     workerGroup.ShutdownGracefullyAsync().Wait();
             // }
+          
+            // 订阅错误事件
+
+                var manager = new ConnectionManager(IPAddress.Parse("127.0.0.1"), 8080);
+                
+                manager.OnError += (errorMessage) => 
+                {
+                    Console.WriteLine($"Error: {errorMessage}");
+                    // 可以在这里处理其他逻辑
+                };
+
+                await manager.ConnectAsync();
             
-            var manager = new ConnectionManager(IPAddress.Parse("127.0.0.1"), 8080);
-            await manager.ConnectAsync();
+           
         }
     }
 
