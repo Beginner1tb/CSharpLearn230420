@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using DotNetty.Buffers;
+using DotNetty.Codecs;
 using DotNetty.Transport.Bootstrapping;
 
 namespace _34.DotNettyProtobufServer1
@@ -24,26 +25,29 @@ namespace _34.DotNettyProtobufServer1
             var otherWorkerGroup = new MultithreadEventLoopGroup();
             
             var udpWorkerGroup=new MultithreadEventLoopGroup();
+            IPEndPoint protobufIpEndPoint = new IPEndPoint(IPAddress.Loopback, 8080);
+            IPEndPoint iByteBufferIpEndPoint = new IPEndPoint(IPAddress.Loopback, 9090);
             IPEndPoint serverIpEndPoint = new IPEndPoint(IPAddress.Loopback, 8081);
             try
             {
                 
-                
+                //protobuf通道
                 var bootstrap = new ServerBootstrap();
                 bootstrap.Group(bossGroup, workerGroup)
                     .Channel<TcpServerSocketChannel>()
                     .ChildHandler(new ServerInitializer());
 
-                IChannel boundChannel = bootstrap.BindAsync(8080).Result;
+                IChannel boundChannel = bootstrap.BindAsync(protobufIpEndPoint).Result;
                 Console.WriteLine("Server1 started.");
                 //await boundChannel.CloseCompletion;
                 
+                //普通tcp通道
                 var otherBootstrap = new ServerBootstrap();
                 otherBootstrap.Group(otherBossGroup, otherWorkerGroup)
                     .Channel<TcpServerSocketChannel>()
-                    .ChildHandler(new ServerInitializer());
+                    .ChildHandler(new ServerInitializerIByteBuffer());
 
-                IChannel otherBoundChannel = bootstrap.BindAsync(9090).Result;
+                IChannel otherBoundChannel = otherBootstrap.BindAsync(iByteBufferIpEndPoint).Result;
                 Console.WriteLine("Server other started.");
                 
                 var udpBootstrap = new Bootstrap();  // UDP 不使用 ServerBootstrap
@@ -51,8 +55,8 @@ namespace _34.DotNettyProtobufServer1
                     .Channel<SocketDatagramChannel>()
                     .Handler(new UdpServerInitializer());
                 var udpChannel=await udpBootstrap.BindAsync(serverIpEndPoint);
-                Console.WriteLine("Udp Server started.");  
-                
+                Console.WriteLine("Udp Server started.");
+                //await udpChannel.CloseCompletion;
                 // 等待TCP通道关闭和其他服务
                 await Task.WhenAny(boundChannel.CloseCompletion, otherBoundChannel.CloseCompletion);
 
@@ -89,7 +93,7 @@ namespace _34.DotNettyProtobufServer1
         public override void ChannelInactive(IChannelHandlerContext context)
         {
             // 客户端断开连接的处理
-            Console.WriteLine("Client disconnected.");
+            Console.WriteLine("protobuf Client disconnected.");
             base.ChannelInactive(context);
         }
         public override void ExceptionCaught(IChannelHandlerContext ctx, Exception exception)
@@ -110,6 +114,45 @@ namespace _34.DotNettyProtobufServer1
             pipeline.AddLast(new ProtobufVarint32LengthFieldPrepender());
             pipeline.AddLast(new ProtobufEncoder());
             pipeline.AddLast(new ServerHandler());
+        }
+    }
+    
+    public class ServerInitializerIByteBuffer : ChannelInitializer<ISocketChannel>
+    {
+        protected override void InitChannel(ISocketChannel channel)
+        {
+            IChannelPipeline pipeline = channel.Pipeline;
+            pipeline.AddLast(new ServerHandlerIByteBuffer());
+        }
+    }
+    
+    public class ServerHandlerIByteBuffer : SimpleChannelInboundHandler<IByteBuffer>
+    {
+        protected override void ChannelRead0(IChannelHandlerContext ctx, IByteBuffer msg)
+        {
+            string message = msg.ToString(Encoding.UTF8);
+            Console.WriteLine($"Received IByteBuffer : {message}");
+            // Echo the message back,回写msg数据信息
+            ctx.WriteAndFlushAsync(message);
+        }
+
+
+        public override void ChannelActive(IChannelHandlerContext context)
+        {
+           
+            Console.WriteLine("IByteBuffer Client connected.");
+            //base.ChannelActive(context);
+        }
+        public override void ChannelInactive(IChannelHandlerContext context)
+        {
+            // 客户端断开连接的处理
+            Console.WriteLine("IByteBuffer Client disconnected.");
+            base.ChannelInactive(context);
+        }
+        public override void ExceptionCaught(IChannelHandlerContext ctx, Exception exception)
+        {
+            Console.WriteLine("Exception: " + exception.ToString());
+            ctx.CloseAsync();
         }
     }
     

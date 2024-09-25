@@ -20,3 +20,5 @@ TCP和UDP在服务端上有着诸多区别，使用时需要注意：
 
 #### 3. 多引导bootstraps
 以TCP和UDP为例，可以写多个bootstrap，用以处理不同的任务，注意，如果TCP的阻塞方式不正确，则会影响其他的bootstrap的工作
+
+注意，bootstrap之间互不相同，一定要区分开来，否则可能串通道

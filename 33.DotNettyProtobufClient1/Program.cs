@@ -18,24 +18,27 @@ namespace _33.DotNettyProtobufClient1
         static async Task Main(string[] args)
         {
             
-            var workerGroup = new MultithreadEventLoopGroup();
-            try
-            {
-                var bootstrap = new Bootstrap();
-                bootstrap.Group(workerGroup)
-                    .Channel<TcpSocketChannel>()
-                    .Handler(new ClientInitializer());
-
-                IChannel clientChannel = bootstrap.ConnectAsync(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8080)).Result;
-                
-                //clientChannel.CloseCompletion.Wait();
-                //更优雅的方式，阻塞当前的tcp进程，等待结束
-                await Task.WhenAny(clientChannel.CloseCompletion);
-            }
-            finally
-            {
-                workerGroup.ShutdownGracefullyAsync().Wait();
-            }
+            // var workerGroup = new MultithreadEventLoopGroup();
+            // try
+            // {
+            //     var bootstrap = new Bootstrap();
+            //     bootstrap.Group(workerGroup)
+            //         .Channel<TcpSocketChannel>()
+            //         .Handler(new ClientInitializer());
+            //
+            //     IChannel clientChannel = bootstrap.ConnectAsync(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8080)).Result;
+            //     
+            //     //clientChannel.CloseCompletion.Wait();
+            //     //更优雅的方式，阻塞当前的tcp进程，等待结束
+            //     await Task.WhenAny(clientChannel.CloseCompletion);
+            // }
+            // finally
+            // {
+            //     workerGroup.ShutdownGracefullyAsync().Wait();
+            // }
+            
+            var manager = new ConnectionManager(IPAddress.Parse("127.0.0.1"), 8080);
+            await manager.ConnectAsync();
         }
     }
 
@@ -45,11 +48,18 @@ namespace _33.DotNettyProtobufClient1
         {
             try
             {
-                var message = new MyMessage { Id = 1, Content = "Hello, DotNetty Server!" };
-                await ctx.WriteAndFlushAsync(message);
+                var message1 = new MyMessage { Id = 1, Content = "Hello, DotNetty Server!1" };
+                await Task.Delay(1000);
+                await ctx.WriteAndFlushAsync(message1);
+                var message2 = new MyMessage { Id = 2, Content = "Hello, DotNetty Server!2" };
+                await Task.Delay(1000);
+                await ctx.WriteAndFlushAsync(message2);
+                var message3 = new MyMessage { Id = 3, Content = "Hello, DotNetty Server!3" };
+                await Task.Delay(1000);
+                await ctx.WriteAndFlushAsync(message3);
                 Console.WriteLine("ChannelActive : "+DateTime.Now.Millisecond);
                 //这里时间跟电脑和网络有关，不一定能保证读写通道完全关闭
-                await Task.Delay(100).ContinueWith(t => ctx.CloseAsync());
+                //await Task.Delay(100).ContinueWith(t => ctx.CloseAsync());
                 // 发送数据并等待完成
                 // await  ctx.WriteAndFlushAsync(message).ContinueWith(task =>
                 // {
@@ -77,17 +87,19 @@ namespace _33.DotNettyProtobufClient1
             //await ctx.CloseAsync();
         }
 
-        public override void ChannelInactive(IChannelHandlerContext context)
+        public override void ChannelInactive(IChannelHandlerContext ctx)
         {
-            base.ChannelInactive(context);  
+            base.ChannelInactive(ctx);  
             // 客户端断开连接的处理
             Console.WriteLine("IChannelHandlerContext : "+DateTime.Now.Millisecond);
+            ctx.CloseAsync();
+            ((ConnectionManager)ctx.Channel.Parent).ReconnectAsync();
         }
 
         public override void ExceptionCaught(IChannelHandlerContext ctx, Exception exception)
         {
             Console.WriteLine("Exception: " + exception.ToString());
-            ctx.CloseAsync();
+            //ctx.CloseAsync();
         }
         
     }
