@@ -25,7 +25,7 @@ namespace _33.DotNettyProtobufClient1
         {
             _host = host;
             _port = port;
-            
+            _group = new MultithreadEventLoopGroup(4);
 
         }
 
@@ -45,7 +45,7 @@ namespace _33.DotNettyProtobufClient1
                     _channel = null;
                 }
 
-                _group = new MultithreadEventLoopGroup(4);
+                
                 var bootstrap = new Bootstrap();
                 bootstrap.Group(_group)
                     .Channel<TcpSocketChannel>()
