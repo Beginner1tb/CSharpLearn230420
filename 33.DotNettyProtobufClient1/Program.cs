@@ -114,9 +114,14 @@ namespace _33.DotNettyProtobufClient1
         public override async void ChannelInactive(IChannelHandlerContext ctx)
         {
             //base.ChannelInactive(ctx);  
-            // 客户端断开连接的处理
+            // 客户端断开连接的处理，不做处理
             Console.WriteLine("IChannelHandlerContext : " + DateTime.Now.Millisecond);
+            //关不关看上去区别不大
             //ctx.CloseAsync();
+
+
+            //这里是错误写法，通过ctx这个ChannelHandler获取ConnectionManager
+            //但是此时，ConnectionManager现在已关闭，无法重连
             //((ConnectionManager)ctx.Channel.Parent).ReconnectAsync();
             try
             {
@@ -134,7 +139,7 @@ namespace _33.DotNettyProtobufClient1
             
             Console.WriteLine("ExceptionCaught: " + exception.ToString());
             //Console.ReadLine();
-            await ctx.CloseAsync();
+            //await ctx.CloseAsync();
             //if (exception is SocketException)
             //{
             //    // 捕获远程主机强制关闭连接的异常，不退出，等待 ChannelInactive 处理

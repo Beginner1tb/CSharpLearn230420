@@ -107,3 +107,18 @@ public class ClientHandler : SimpleChannelInboundHandler<MyMessage>
 当然，也可以让服务端发送一个数据，然后关闭连接在``ChannelActive``方法中进行
 
 注意：延迟关闭时间跟电脑和网络有关，不一定能保证读写通道完全关闭
+
+#### 8. 断线重连
+断线重连的程序运行逻辑如下：
+```mermaid
+flowchart TD
+   A([Start]) --> B[ConnectAsync]
+   B --> C{connected}
+   C -- No --> D[Reconnected Async]
+   D --> B
+   C -- Yes --> E[ChannelActive]
+   E --> F{Exception}
+   F -- Yes --> G[ChannelInActive]
+   G --> D
+```
+具体过程

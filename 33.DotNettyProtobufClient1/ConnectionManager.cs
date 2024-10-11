@@ -63,6 +63,7 @@ namespace _33.DotNettyProtobufClient1
                 await ReconnectAsync();
                
             }
+
             //finally
             //{
             //    await _group.ShutdownGracefullyAsync();
