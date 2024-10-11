@@ -110,15 +110,28 @@ public class ClientHandler : SimpleChannelInboundHandler<MyMessage>
 
 #### 8. 断线重连
 断线重连的程序运行逻辑如下：
-```mermaid
-flowchart TD
-   A([Start]) --> B[ConnectAsync]
-   B --> C{connected}
-   C -- No --> D[Reconnected Async]
-   D --> B
-   C -- Yes --> E[ChannelActive]
-   E --> F{Exception}
-   F -- Yes --> G[ChannelInActive]
-   G --> D
+```plantuml
+
+
+@startuml
+start
+
+:ConnectAsync;
+if (connected?) then (Yes)
+:ChannelActive;
+if (Exception?) then (Yes)
+:ChannelInActive;
+:Reconnected Async;
+-> ConnectAsync;
+else (No)
+-> ChannelActive;
+endif
+else (No)
+:Reconnected Async;
+-> ConnectAsync;
+endif
+
+stop
+@enduml
 ```
 具体过程
