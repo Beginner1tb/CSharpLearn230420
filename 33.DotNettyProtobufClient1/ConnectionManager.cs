@@ -107,5 +107,21 @@ namespace _33.DotNettyProtobufClient1
             }
 
         }
+        
+        public async Task ShutdownAsync()
+        {
+            if (_channel != null && _channel.Active)
+            {
+                await _channel.CloseAsync(); // 关闭连接
+            }
+
+            if (_group != null)
+            {
+                await _group.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)); // 优雅关闭事件循环
+                _group = null;
+            }
+
+            
+        }
     }
 }

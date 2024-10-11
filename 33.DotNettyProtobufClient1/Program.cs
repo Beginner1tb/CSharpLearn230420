@@ -38,16 +38,20 @@ namespace _33.DotNettyProtobufClient1
             //     workerGroup.ShutdownGracefullyAsync().Wait();
             // }
 
-            // 订阅错误事件
+            
 
             var manager = new ConnectionManager(IPAddress.Parse("127.0.0.1"), 8080);
-
+            
+            // 订阅错误事件
             manager.OnError += (errorMessage) =>
             {
                 Console.WriteLine($"Error: {errorMessage}");
                     // 可以在这里处理其他逻辑
                 };
 
+            //订阅程序关闭事件,好像不起作用
+            AppDomain.CurrentDomain.ProcessExit += async (s, e) => await manager.ShutdownAsync();
+            
             await manager.ConnectAsync();
 
             Console.WriteLine("Press any key to exit...");

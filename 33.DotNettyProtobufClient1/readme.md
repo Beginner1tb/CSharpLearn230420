@@ -109,29 +109,40 @@ public class ClientHandler : SimpleChannelInboundHandler<MyMessage>
 注意：延迟关闭时间跟电脑和网络有关，不一定能保证读写通道完全关闭
 
 #### 8. 断线重连
-断线重连的程序运行逻辑如下：
-```plantuml
+断线重连的程序运行逻辑如下：（因为PlantUML的图在Github中无法显示所以用mermaid图表）
+```mermaid
+---
+title: 程序运行逻辑
+---
+flowchart TD
+   A([Start]) --> A1[Init ConnectManager]
+   A1[Init ConnectManager]-->B[ConnectAsync]
+   B --> C{connected}
+   C -- No --> D[ReconnectedAsync]
+   
+   C -- Yes --> E[ChannelActive]
+   E --> F{ExceptionCaught}
+   F -- Yes --> G[ChannelInActive]
+   G --> D
+   
+   D[ReconnectedAsync]-->D2{_isReconnecting}
+   D2 -- No --> D3[Channel State]
+   D3 --> D4[Wait For Seconds]
+   D4 -->B[ConnectAsync]
+     
+   
 
-
-@startuml
-start
-
-:ConnectAsync;
-if (connected?) then (Yes)
-:ChannelActive;
-if (Exception?) then (Yes)
-:ChannelInActive;
-:Reconnected Async;
--> ConnectAsync;
-else (No)
--> ChannelActive;
-endif
-else (No)
-:Reconnected Async;
--> ConnectAsync;
-endif
-
-stop
-@enduml
 ```
-具体过程
+具体过程：
+1. 初始化``ConnectManager``，``ConnectManager``作为管理整个链接的实际对象，输入参数为IP和端口，``ConnectManager``的构造函数的入口参数，注意，初始化``ConnectManager``时也初始化了``EventLoopGroup``,有且只有一次，注意这里一定需要加阻塞过程，这里用的是``Console.ReadLine()``，否则如果重连失败主线程会直接退出
+2. 启动``ConnectManager``的``ConnectAsync``的Task，``ConnectAsync``中包含了一般的网络引导对象，以及引导的连接；
+3. 此时如果连接失败，则进入重连的``ReconnectedAsync``的Task，如果连接成功，则等待链接结束Task:``Task.WhenAny(_channel.CloseCompletion);``，如果网络异常结束，则进入重连的``ReconnectedAsync``的Task；
+4. 如果刚开始连接成功，后面网络中断，``ExceptionCaught``方法会捕捉到错误，``ChannelInActive``在之后处理断线之后的问题，在``ChannelInActive``中启用``ReconnectedAsync``的Task；
+5. 当进入重连的``ReconnectedAsync``的Task时，先判断``_isReconnecting``是否处于重连状态，如果正在重连则退出，防止反复重连，如果不在重连状态中，先判断Channel的状态，如果Channel除非非活动状态或者没启动,则再运行``ConnectAsync``的Task；
+6. 至此完成断线重连的所有逻辑
+
+注意：
+1. ``ConnectManager``初始化之后一定需要加阻塞过程，这里用的是``Console.ReadLine()``，因为如果不加阻塞，则如果一开始就没连上还会重连，如果一开始连上了再连就会主线程直接退出，总之，这个断线重连肯定是阻塞的；
+2. ``EventLoopGroup``对象只初始化一次，防止每次重连的时候出现资源浪费；
+3. 网络断线事件是在``ChannelInActive``中处理，``IChannelHandlerContext``在这个时间上看起来关不关闭对程序影响不大；
+4. ``ConnectAsync``不能在失败后关闭``EventLoopGroup``，因为``EventLoopGroup``只初始化了一次，看样子``EventLoopGroup``只能在主线程关闭时再关闭
