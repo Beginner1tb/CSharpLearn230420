@@ -10,14 +10,18 @@ namespace _33.DotNettyProtobufClient1
 {
     public class ConnectionManager
     {
-        private IChannel _channel;
+        internal IChannel Channel;
+
+     
+        internal MultithreadEventLoopGroup Group;
         private readonly IPAddress _host;
         private readonly int _port;
-        private MultithreadEventLoopGroup _group;
+       
         private int _reconnectAttempts = 0; 
         private const int MaxReconnectAttempts = 2;
         // 用于确保不会多次触发重连的标志位
         private bool _isReconnecting = false;
+        public bool IsConnected = false;
 
         public event Action<string> OnError; 
 
@@ -25,7 +29,7 @@ namespace _33.DotNettyProtobufClient1
         {
             _host = host;
             _port = port;
-            _group = new MultithreadEventLoopGroup(4);
+            Group = new MultithreadEventLoopGroup(4);
 
         }
 
@@ -38,28 +42,30 @@ namespace _33.DotNettyProtobufClient1
                 //{
                 //    await _group.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1));
                 //}
-                if (_channel != null && _channel.Active)
+                if (Channel != null && Channel.Active)
                 {
                     // 关闭旧连接，释放资源
-                    await _channel.CloseAsync();
-                    _channel = null;
+                    await Channel.CloseAsync();
+                    Channel = null;
                 }
 
                 
                 var bootstrap = new Bootstrap();
-                bootstrap.Group(_group)
+                bootstrap.Group(Group)
                     .Channel<TcpSocketChannel>()
                     .Handler(new ClientInitializer(this));
 
-                _channel = await bootstrap.ConnectAsync(_host, _port);
+                Channel = await bootstrap.ConnectAsync(_host, _port);
                 Console.WriteLine("Connected to server.");
                 _reconnectAttempts = 0;
-                await Task.WhenAny(_channel.CloseCompletion);
+                IsConnected = true;
+                await Task.WhenAny(Channel.CloseCompletion);
             }
             catch (Exception ex)
             {
 
                 Console.WriteLine($"Connection failed: {ex.Message}");
+                IsConnected = false;
                 await ReconnectAsync();
                
             }
@@ -82,7 +88,7 @@ namespace _33.DotNettyProtobufClient1
             _isReconnecting = true; // 开始重连
             try
             {
-                while (_channel == null || !_channel.Active)
+                while (Channel == null || !Channel.Active)
                 {
                     _reconnectAttempts++;
                     if (_reconnectAttempts > MaxReconnectAttempts)
@@ -92,6 +98,7 @@ namespace _33.DotNettyProtobufClient1
                         OnError?.Invoke(errorMessage);
                     }
                     Console.WriteLine("Attempting to reconnect...");
+                    IsConnected = false;
                     await Task.Delay(2000); // 等待 2 秒后重试
                     await ConnectAsync();
                 }
@@ -110,15 +117,15 @@ namespace _33.DotNettyProtobufClient1
         
         public async Task ShutdownAsync()
         {
-            if (_channel != null && _channel.Active)
+            if (Channel != null && Channel.Active)
             {
-                await _channel.CloseAsync(); // 关闭连接
+                await Channel.CloseAsync(); // 关闭连接
             }
 
-            if (_group != null)
+            if (Group != null)
             {
-                await _group.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)); // 优雅关闭事件循环
-                _group = null;
+                await Group.ShutdownGracefullyAsync(TimeSpan.FromMilliseconds(100), TimeSpan.FromSeconds(1)); // 优雅关闭事件循环
+                Group = null;
             }
 
             
