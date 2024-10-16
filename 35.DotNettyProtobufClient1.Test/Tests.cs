@@ -205,44 +205,104 @@ namespace _35.DotNettyProtobufClient1.Test
             StopServer(); // 停止服务器
         }
 
-        private void StartServer()
+        private async void StartServer()
         {
             _server = new TcpListener(IPAddress.Loopback, 8080);
             _server.Start();
-            _server.BeginAcceptTcpClient(AcceptClientCallback, _server);
+            await AcceptClientAsync(_server);
         }
 
-        private void AcceptClientCallback(IAsyncResult ar)
+        private async Task AcceptClientAsync(TcpListener listener)
         {
-            try
+            while (true)
             {
-                var listener = (TcpListener)ar.AsyncState;
-                var client = listener.EndAcceptTcpClient(ar);
-
-                // 在后台线程中保持客户端连接，直到服务器停止
-                Task.Run(() =>
+                try
                 {
+                    var client = await listener.AcceptTcpClientAsync();
+                    await HandleClientAsync(client);
+                }
+                catch (ObjectDisposedException)
+                {
+                    break;
+                }
+            }
+        }
+
+        private async Task HandleClientAsync(TcpClient client)
+        {
+            using (client)
+            {
+                try
+                {
+                    var buffer = new byte[1024];
                     using (var stream = client.GetStream())
                     {
-                        var buffer = new byte[1024];
                         while (client.Connected)
                         {
-                            // 模拟处理客户端请求
-                            if (stream.Read(buffer, 0, buffer.Length) == 0)
+                            var bytesRead = await stream.ReadAsync(buffer, 0, buffer.Length);
+                            if (bytesRead == 0)
+                            {
                                 break;
+                            }
+
+                            // 处理读取到的数据（这里是示例代码，具体逻辑取决于您的业务需求）
                         }
                     }
-                });
-            }
-            catch (ObjectDisposedException)
-            {
-                // 服务器被关闭时会触发该异常，不需要特殊处理
+                }
+                catch (Exception ex)
+                {
+                    // 处理异常，例如记录日志
+                    Console.WriteLine($"Exception: {ex.Message}");
+                }
             }
         }
 
         private void StopServer()
         {
-            _server.Stop();
+            _server?.Stop();
         }
+
+        #region 老式的Begin/End写法
+        //private void StartServer()
+        //{
+        //    _server = new TcpListener(IPAddress.Loopback, 8080);
+        //    _server.Start();
+        //    _server.BeginAcceptTcpClient(AcceptClientCallback, _server);
+        //}
+
+        //private void AcceptClientCallback(IAsyncResult ar)
+        //{
+        //    try
+        //    {
+        //        var listener = (TcpListener)ar.AsyncState;
+        //        var client = listener.EndAcceptTcpClient(ar);
+
+        //        // 在后台线程中保持客户端连接，直到服务器停止
+        //        Task.Run(() =>
+        //        {
+        //            using (var stream = client.GetStream())
+        //            {
+        //                var buffer = new byte[1024];
+        //                while (client.Connected)
+        //                {
+        //                    // 模拟处理客户端请求
+        //                    if (stream.Read(buffer, 0, buffer.Length) == 0)
+        //                        break;
+        //                }
+        //            }
+        //        });
+        //    }
+        //    catch (ObjectDisposedException)
+        //    {
+        //        // 服务器被关闭时会触发该异常，不需要特殊处理
+        //    }
+        //}
+
+        //private void StopServer()
+        //{
+        //    _server.Stop();
+        //}
+
+        #endregion
     }
 }
